@@ -29,7 +29,7 @@ export default {
 
 
 <style lang="scss">
-@import "./styles/gloabl.scss";
+@import "./styles/global.scss";
 
 .fade-enter-active,
 .fade-leave-active {

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <button @click="fetchEvents();">Get Events</button>
+    <button @click="getEvents();">Get Events</button>
     <div v-for="(event, index) in events"></div>
   </div>
 </template>
 
 <script>
 import eventService from "../services/eventService";
+import { GET_EVENTS } from "../graphql/query";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -14,10 +16,10 @@ export default {
     };
   },
   methods: {
-    async fetchEvents() {
-      const response = await eventService.fetchEvents().then(response => {
-        console.log(response.data);
-      });
+    async getEvents() {
+      const response = await this.$apollo
+        .query({ query: GET_EVENTS })
+        .then(response => console.log(response.data));
     }
   }
 };

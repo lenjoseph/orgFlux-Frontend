@@ -43,8 +43,7 @@ export default {
   font-family: "Raleway", sans-serif;
   display: flex;
   flex-direction: row;
-  width: calc(100% - 90px);
-  margin-left: 90px;
+  width: 100%;
   overflow: hidden;
 }
 </style>

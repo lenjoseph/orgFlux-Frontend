@@ -1,9 +1,19 @@
 <template>
-  <div></div>
+  <div>
+    <button @click="eventView();">Events</button>
+  </div>
 </template>
 
 <script>
-export default {};
+import { mapMutations } from "vuex";
+export default {
+  methods: {
+    ...mapMutations(["EVENT_VIEW"]),
+    eventView: function() {
+      this.EVENT_VIEW();
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

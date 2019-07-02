@@ -1,10 +1,11 @@
 import Api from './api';
 
 export default {
-    async fetchEvents() {
-        const events = await Api().post({
-            query: '{events}'
-        });
-        return events;
+    fetchEvents() {
+        return Api().post('', {
+            query: `
+            query {events {}}
+            `
+        })
     }
 }

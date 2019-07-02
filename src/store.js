@@ -9,11 +9,15 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
 
   state: {
-    component: 'organization-view'
+    component: 'organization-view',
+    darkmode: false
   },
   getters: {
     currentComponent: state => {
       return state.component;
+    },
+    darkMode: state => {
+      return state.darkmode;
     }
   },
   mutations: {
@@ -26,6 +30,9 @@ export default new Vuex.Store({
     EVENT_VIEW: (state) => {
       state.component = 'event-view';
     },
+    DARK_MODE: (state) => {
+      state.darkmode = !state.darkmode;
+    }
   },
   actions: {
 

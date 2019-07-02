@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/gloabl.scss";
+@import "../styles/global.scss";
 
 .component-fade-enter-active,
 .component-fade-leave-active {

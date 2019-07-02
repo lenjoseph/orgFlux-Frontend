@@ -1,7 +1,26 @@
-<template></template>
+<template>
+  <div>
+    <button @click="fetchEvents();">Get Events</button>
+    <div v-for="(event, index) in events"></div>
+  </div>
+</template>
 
 <script>
-export default {};
+import eventService from "../services/eventService";
+export default {
+  data() {
+    return {
+      events: []
+    };
+  },
+  methods: {
+    async fetchEvents() {
+      const response = await eventService.fetchEvents().then(response => {
+        console.log(response.data);
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

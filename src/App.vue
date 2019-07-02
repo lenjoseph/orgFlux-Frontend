@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="header-group" v-show="routeCheck">
+    <div id="header-group">
       <app-header></app-header>
     </div>
     <transition name="fade" mode="out-in">

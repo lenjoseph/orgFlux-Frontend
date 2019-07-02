@@ -1,15 +1,13 @@
 <template>
   <!-- build logged out user view and use user logged in as a conditional to render appropriate part -->
   <div class="home">
-    <side-bar></side-bar>
     <transition name="component-fade" mode="out-in">
-      <component v-bind:is="theComponent"></component>
+      <component v-bind:is="currentComponent"></component>
     </transition>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import { mapGetters } from "vuex";
 import OrganizationView from "../components/Organizations";
 import LocationView from "../components/Locations";

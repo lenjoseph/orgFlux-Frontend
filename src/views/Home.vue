@@ -42,4 +42,8 @@ $lIcon: #cbd3e3;
 $lText: #222629;
 $lBlue1: #0074e1;
 $lBlue2: #10e7dc;
+
+.home {
+  height: calc(100% - 116px);
+}
 </style>

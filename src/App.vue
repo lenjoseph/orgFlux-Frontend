@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]">
-    <div id="nav">
+    <div id="nav" v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]">
       <span id="company">
         <span id="logo">
           <span class="bar" id="bar1"></span>
@@ -53,67 +53,69 @@ $Offwhite: #f1faee;
   text-align: center;
   transition: ease-in-out all 0.2s;
   user-select: none;
-}
-#nav {
-  height: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(grey, 0.2);
-  background: #f2f2fa;
-  #company {
+  height: 100vh;
+  #nav {
+    height: 70px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    #logo {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-end;
-      height: 55px;
-      width: 55px;
-      border-radius: 50%;
-      margin-right: 8px;
-      margin-left: 8px;
-      margin-bottom: 10px;
-      // background: linear-gradient(rgba($Icon, 0.3), rgba($Icon, 1));
-      .bar {
-        display: flex;
-        width: 8px;
-        margin-left: 2px;
-        margin-right: 2px;
-        margin-bottom: 12px;
-        background: linear-gradient($Blue1 10%, $Blue2);
-        border-radius: 2px;
-      }
-      #bar1 {
-        height: 30px;
-      }
-      #bar2 {
-        height: 21px;
-      }
-      #bar3 {
-        height: 26px;
-      }
-    }
-    #brand {
+    border-bottom: 1px solid rgba(grey, 0.2);
+    background: #f2f2fa;
+    transition: ease-in-out all 0.2s;
+    #company {
       display: flex;
       flex-direction: row;
       align-items: center;
-      #brand-text {
+      #logo {
         display: flex;
-        font-family: "Ubuntu", sans-serif;
-        color: rgba($Blue2, 0.8);
-        font-size: 1.7em;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+        margin-right: 8px;
+        margin-left: 8px;
+        margin-bottom: 10px;
+        // background: linear-gradient(rgba($Icon, 0.3), rgba($Icon, 1));
+        .bar {
+          display: flex;
+          width: 8px;
+          margin-left: 2px;
+          margin-right: 2px;
+          margin-bottom: 12px;
+          background: linear-gradient($Blue1 10%, $Blue2);
+          border-radius: 2px;
+        }
+        #bar1 {
+          height: 30px;
+        }
+        #bar2 {
+          height: 21px;
+        }
+        #bar3 {
+          height: 26px;
+        }
       }
-      #attribution {
+      #brand {
         display: flex;
-        font-family: "Ubuntu", sans-serif;
-        color: rgba($Blue2, 0.8);
-        font-size: 1em;
-        margin-left: 15px;
-        margin-top: 24px;
+        flex-direction: row;
+        align-items: center;
+        #brand-text {
+          display: flex;
+          font-family: "Ubuntu", sans-serif;
+          color: rgba($Blue2, 0.8);
+          font-size: 1.7em;
+        }
+        #attribution {
+          display: flex;
+          font-family: "Ubuntu", sans-serif;
+          color: rgba($Blue2, 0.8);
+          font-size: 1em;
+          margin-left: 15px;
+          margin-top: 24px;
+        }
       }
     }
   }

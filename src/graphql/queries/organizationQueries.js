@@ -12,3 +12,14 @@ export const GET_ORGANIZATIONS = gql `
         }
     }
 `
+
+export const GET_ORGANIZATION = gql `
+    query organization(id: ID!) {
+        organization {
+            _id
+            name
+            CreatedAt
+            UpdatedAt
+        }
+    }
+`

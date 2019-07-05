@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { GET_EVENTS } from "../graphql/query";
+import { GET_EVENTS } from "../graphql/queries/eventQueries";
 export default {
   data() {
     return {

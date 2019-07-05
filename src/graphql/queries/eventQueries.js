@@ -31,6 +31,7 @@ export const GET_EVENT = gql `
 export const ORG_EVENTS = gql `
     query orgEvents($id: ID!) {
         events(id: $id) {
+            events{
         _id
         name
         organization
@@ -39,5 +40,6 @@ export const ORG_EVENTS = gql `
         CreatedAt
         UpdatedAt
         }
+    }
     }
 `

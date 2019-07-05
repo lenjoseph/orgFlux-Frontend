@@ -22,20 +22,6 @@ export const GET_LOCATIONS = gql `
 `
 
 
-export const GET_ORGANIZATIONS = gql `
-            query organizations {
-                organizations {
-                    organizations {
-                _id
-                name
-                CreatedAt
-                UpdatedAt
-            }
-        }
-    }
-`
-
-
 export const GET_LOCATION = gql `
     query location($id:ID!) {
         location(id: $id) {
@@ -57,6 +43,7 @@ export const GET_LOCATION = gql `
 export const ORG_LOCATIONS = gql `
     query orgLocations($id:ID!) {
         locations(id: $id) {
+          locations{
         _id
         organization
         name
@@ -70,5 +57,6 @@ export const ORG_LOCATIONS = gql `
         CreatedAt
         UpdatedAt
     }
+  }
   }
 `

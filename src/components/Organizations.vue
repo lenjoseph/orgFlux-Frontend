@@ -7,6 +7,7 @@
         type="text"
         placeholder="Enter Organization Name..."
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+        @keydown.enter="createOrganization();"
       />
 
       <button
@@ -56,11 +57,13 @@
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
               id="locations"
+              @click="seeLocations(organization._id);"
             >Locations</span>
             <span
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
               id="events"
+              @click="seeEvents(organization._id)"
             >Events</span>
           </span>
           <span class="btn-holder">
@@ -73,6 +76,7 @@
           </span>
         </div>
         <div
+          v-show="viewDefault && !viewLoc && !viewEvents"
           v-bind:style="[darkMode == true ? {borderLeft: '2px solid #75e1dd', borderBottom: '2px solid #75e1dd', borderRight: '2px solid #75e1dd', background: 'rgba(34, 38, 41, 1)'}: {}]"
           class="data"
         >
@@ -95,6 +99,36 @@
             </div>
           </div>
         </div>
+        <div
+          class="view-locations"
+          v-show="!viewDefault && viewLoc && !viewEvents"
+          v-for="(location, index) in orgLocs"
+          :key="location._id"
+          :location="location"
+        >
+          <div id="loc-name">
+            <p id="loc-name-text">{{location.name}}</p>
+          </div>
+          <div id="loc-location">
+            <div id="loc-address">
+              <p id="loc-address-text">{{location.address}}</p>
+            </div>
+            <div id="loc-place">
+              <div id="loc-place-1">
+                <p id="loc-city">{{location.city}}</p>
+                <p id="loc-state">{{location.state}}</p>
+              </div>
+              <div id="loc-place-2">
+                <p id="loc-country">{{location.country}}</p>
+                <p id="loc-zip">{{location.zip}}</p>
+              </div>
+            </div>
+          </div>
+          <div id="loc-coordinates">
+            <p id="loc-lat">{{location.latitude}}</p>
+            <p id="loc-long">{{location.longitude}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -109,6 +143,8 @@ import {
   UPDATE_ORGANIZATION
 } from "../graphql/mutations/organizationMutations";
 import { format } from "path";
+import { ORG_LOCATIONS } from "../graphql/queries/locationQueries";
+import { ORG_EVENTS } from "../graphql/queries/eventQueries";
 
 export default {
   data() {
@@ -118,13 +154,35 @@ export default {
       name: "",
       editOrg: "",
       editID: "",
-      newName: ""
+      newName: "",
+      viewDefault: true,
+      viewLoc: false,
+      viewEvents: false,
+      orgLocs: [],
+      orgEvs: []
     };
   },
   computed: {
     ...mapGetters(["darkMode"])
   },
   methods: {
+    seeLocations(id) {
+      this.viewLoc = true;
+      this.default = false;
+      this.viewEvents = false;
+      this.orgLocations(id);
+    },
+    seeEvents(id) {
+      this.viewLoc = false;
+      this.default = false;
+      this.viewEvents = true;
+      this.orgEvents(id);
+    },
+    defaultView() {
+      this.viewLoc = false;
+      this.viewDefault = true;
+      this.viewEvents = false;
+    },
     editOn(organization) {
       this.editing = true;
       this.name = "";
@@ -152,6 +210,26 @@ export default {
             org.uTime = updated.time;
           }
           this.organizations = organizations;
+        });
+    },
+    // gets Locations for specific organization
+    async orgLocations(id) {
+      const response = await this.$apollo
+        .query({
+          query: ORG_LOCATIONS
+        })
+        .then(response => {
+          this.orgLocs = response.data.locations.locations;
+        });
+    },
+    // gets events for specific organization
+    async orgEvents(id) {
+      const response = await this.$apollo
+        .query({
+          query: ORG_EVENTS
+        })
+        .then(response => {
+          this.orgEvs = response.data.events.events;
         });
     },
     // creates new organization

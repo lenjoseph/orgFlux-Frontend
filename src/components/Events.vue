@@ -6,9 +6,7 @@
 </template>
 
 <script>
-import eventService from "../services/eventService";
 import { GET_EVENTS } from "../graphql/query";
-import axios from "axios";
 export default {
   data() {
     return {

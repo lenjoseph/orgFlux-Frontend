@@ -1,23 +1,67 @@
 <template>
-  <div id="container">
-    <div id="controls"></div>
-    <div id="organizations">
+  <div id="container" v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]">
+    <div id="controls">
+      <input id="org-field" v-model="name" type="text" placeholder="Enter Organization Name..." />
+
+      <button id="add-btn" @click="createOrganization();">
+        <p id="add-text">+</p>
+      </button>
+    </div>
+    <div
+      id="organizations"
+      v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]"
+    >
       <div
         class="organization-data"
         id="card"
         v-for="(organization, index) in organizations"
         :key="organization._id"
         :organization="organization"
+        v-bind:style="[darkMode == true ? {boxShadow: '0px 4px 4px rgba(117, 225, 221,.3)'}: {}]"
       >
         <div class="buttons">
-          <span class="btn" id="locations">Locations</span>
-          <span class="btn" id="events">Events</span>
-          <span class="btn" id="delete">X</span>
+          <span class="btn-holder">
+            <span
+              v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+              class="btn"
+              id="locations"
+            >Locations</span>
+            <span
+              v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+              class="btn"
+              id="events"
+            >Events</span>
+          </span>
+          <span class="btn-holder">
+            <span
+              v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+              class="btn"
+              id="edit"
+            >&#9998;</span>
+          </span>
         </div>
-        <div class="data">
-          <p>{{organization.name}}</p>
-          <p>{{organization.CreatedAt}}</p>
-          <p>{{organization.UpdatedAt}}</p>
+        <div
+          v-bind:style="[darkMode == true ? {borderLeft: '2px solid #75e1dd', borderBottom: '2px solid #75e1dd', borderRight: '2px solid #75e1dd', background: 'rgba(34, 38, 41, 1)'}: {}]"
+          class="data"
+        >
+          <div class="org">
+            <p
+              v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              id="org-name"
+            >{{organization.name}}</p>
+          </div>
+          <div class="time">
+            <div v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]" class="created">
+              <p id="c-label">Created At</p>
+              <p id="c-day">{{organization.cDay}}</p>
+              <p id="c-time">{{organization.cTime}}</p>
+            </div>
+            <div v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]" class="updated">
+              <p id="u-label">Last Updated</p>
+              <p id="u-day">{{organization.uDay}}</p>
+              <p id="u-time">{{organization.uTime}}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -25,34 +69,55 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import moment from "moment";
+import { mapMutations, mapGetters } from "vuex";
+import { formatTime } from "../services/timeFormatter";
 import { GET_ORGANIZATIONS } from "../graphql/queries/organizationQueries";
+import { CREATE_ORGANIZATION } from "../graphql/mutations/organizationMutations";
+import { format } from "path";
+
 export default {
   data() {
     return {
-      organizations: []
+      organizations: [],
+      addingOrg: false,
+      name: ""
     };
   },
+  computed: {
+    ...mapGetters(["darkMode"])
+  },
   methods: {
+    addOn() {
+      this.addingOrg = !this.addingOrg;
+    },
+    // fetches list of organizations
     async getOrganizations() {
       const response = await this.$apollo
         .query({ query: GET_ORGANIZATIONS })
-        .then(response => {
-          response.data.organizations.organizations.forEach(
-            org =>
-              (org.CreatedAt = moment(new Date(org.CreatedAt))
-                .utc()
-                .format("HH:mm:ss MMMM DD, YYYY"))
-          );
-          // response.data.organizations.organizations.forEach(
-          //   org =>
-          //     (org.UpdatedAt = moment(new Date(org.UpdatedAt))
-          //       .utc()
-          //       .format("HH:mm:ss MMMM DD, YYYY"))
-          // );
-          this.organizations = response.data.organizations.organizations;
+        .then(async response => {
+          const organizations = response.data.organizations.organizations;
+          for (const org of organizations) {
+            const created = await formatTime(org.CreatedAt);
+            const updated = await formatTime(org.UpdatedAt);
+            org.cDay = created.day;
+            org.cTime = created.time;
+            org.uDay = updated.day;
+            org.uTime = updated.time;
+          }
+          this.organizations = organizations;
         });
+    },
+    // creates new organization
+    async createOrganization() {
+      await this.$apollo
+        .mutate({
+          mutation: CREATE_ORGANIZATION,
+          variables: {
+            name: this.name
+          }
+        })
+        .then((this.name = ""))
+        .then(this.getOrganizations());
     }
   },
   created() {
@@ -84,12 +149,59 @@ $secondaryColor: #f7e291;
   user-select: none;
   #controls {
     display: flex;
-    align-self: center;
+    align-self: flex-end;
     flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
     margin-top: 30px;
+    margin-right: 30px;
     height: 60px;
-    width: 90%;
+    width: 350px;
     border-radius: 30px;
+    background: $primaryColor;
+    #org-field {
+      display: flex;
+      width: 250px;
+      height: 40px;
+      border-radius: 30px;
+      border: none;
+      padding-left: 10px;
+    }
+    #org-field:focus {
+      outline: none;
+    }
+    #org-field::placeholder {
+      font-size: 1.3em;
+      color: $darkColor;
+      font-family: "Muli", sans-serif;
+    }
+    #add-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      cursor: pointer;
+      #add-text {
+        display: flex;
+        margin: auto;
+        font-size: 4.2em;
+        margin-top: -9px;
+        line-height: 1;
+        font-family: "Muli", sans-serif;
+        color: $primaryColor;
+      }
+    }
+    #add-btn:active {
+      outline: none;
+    }
+    #add-btn {
+      outline: none;
+    }
   }
   #organizations {
     display: flex;
@@ -98,7 +210,6 @@ $secondaryColor: #f7e291;
     flex-wrap: wrap;
     height: calc(100% - 110px);
     width: 100%;
-
     .organization-data {
       display: flex;
       flex-direction: column;
@@ -110,9 +221,8 @@ $secondaryColor: #f7e291;
       margin: 15px;
       border-radius: 8px;
       box-shadow: 0px 4px 4px grey;
-      transition: all 0.6s ease;
+      transition: all 0.1s ease;
       background: #fff;
-
       .buttons {
         display: flex;
         flex-direction: row;
@@ -123,31 +233,99 @@ $secondaryColor: #f7e291;
         border-top-right-radius: 8px;
         padding-right: 5px;
         padding-left: 5px;
-
-        .btn {
+        .btn-holder {
           display: flex;
-          justify-content: center;
+          flex-direction: row;
           align-items: center;
-          height: 25px;
-          padding: 7px;
-          border-radius: 6px;
-          background: #fafafa;
-          margin: 5px;
-          font-size: 1.1em;
-          font-weight: bold;
-          font-family: "Muli", sans-serif;
-          color: $primaryColor;
-          cursor: pointer;
-        }
-        .btn:hover {
-          box-shadow: 0px 2px 2px $black;
-        }
-        .btn:active {
-          box-shadow: none;
+          height: 100%;
+          .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 22px;
+            padding: 6px;
+            border-radius: 6px;
+            background: #fafafa;
+            margin: 5px;
+            font-size: 1.1em;
+            font-family: "Muli", sans-serif;
+            color: rgba($darkColor, 0.8);
+            cursor: pointer;
+          }
+          .btn:hover {
+            box-shadow: 0px 2px 2px $black;
+          }
+          .btn:active {
+            box-shadow: none;
+          }
+          #edit {
+            font-size: 1.3em;
+          }
         }
         #delete {
           padding-left: 10px;
           padding-right: 10px;
+          font-weight: bold;
+        }
+      }
+      .data {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: calc(100% - 50px);
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        .org {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          height: 45%;
+          #org-name {
+            font-size: 1.6em;
+            font-family: "Muli", sans-serif;
+            color: $darkColor;
+          }
+        }
+        .time {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          height: 55%;
+          width: 100%;
+          .created {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 40%;
+            height: 100%;
+            font-size: 1.1em;
+            color: $darkColor;
+            font-family: "Muli", sans-serif;
+            #c-label {
+              font-size: 1.1em;
+              margin-bottom: 6px;
+              text-decoration: underline;
+            }
+          }
+          .updated {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            width: 40%;
+            height: 100%;
+            font-size: 1.1em;
+            color: $darkColor;
+            font-family: "Muli", sans-serif;
+            #u-label {
+              font-size: 1.1em;
+              margin-bottom: 6px;
+              text-decoration: underline;
+            }
+          }
         }
       }
     }

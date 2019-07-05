@@ -3,13 +3,28 @@
     <div id="nav" v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]">
       <span id="company">
         <span id="logo">
-          <span class="bar" id="bar1"></span>
-          <span class="bar" id="bar2"></span>
-          <span class="bar" id="bar3"></span>
+          <span
+            v-bind:style="[darkMode == true ? {background: 'linear-gradient(#75e1dd, #3dafab)'}: {}]"
+            class="bar"
+            id="bar1"
+          ></span>
+          <span
+            v-bind:style="[darkMode == true ? {background: 'linear-gradient(#75e1dd, #3dafab)'}: {}]"
+            class="bar"
+            id="bar2"
+          ></span>
+          <span
+            v-bind:style="[darkMode == true ? {background: 'linear-gradient(#75e1dd, #3dafab)'}: {}]"
+            class="bar"
+            id="bar3"
+          ></span>
         </span>
         <span id="brand">
-          <p id="brand-text">orgFlux</p>
-          <p id="attribution">A GraphQL API by Len Joseph</p>
+          <p v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]" id="brand-text">orgFlux</p>
+          <p
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+            id="attribution"
+          >A GraphQL API by Len Joseph</p>
         </span>
       </span>
       <dark-button />
@@ -43,6 +58,14 @@ $Blue3: #1d3557;
 $Red: #e63946;
 $Offwhite: #f1faee;
 
+$white: #fff;
+$black: #424242;
+$lightBlack: #232d3d;
+$primaryColor: #3dafab;
+$darkColor: #1e737c;
+$lightColor: #75e1dd;
+$secondaryColor: #f7e291;
+
 * {
   margin: 0;
 }
@@ -60,8 +83,7 @@ $Offwhite: #f1faee;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(grey, 0.2);
-    background: #f2f2fa;
+    background: #fff;
     transition: ease-in-out all 0.2s;
     #company {
       display: flex;
@@ -85,7 +107,7 @@ $Offwhite: #f1faee;
           margin-left: 2px;
           margin-right: 2px;
           margin-bottom: 12px;
-          background: linear-gradient($Blue1 10%, $Blue2);
+          background: linear-gradient($primaryColor 10%, $darkColor);
           border-radius: 2px;
         }
         #bar1 {
@@ -105,13 +127,13 @@ $Offwhite: #f1faee;
         #brand-text {
           display: flex;
           font-family: "Ubuntu", sans-serif;
-          color: rgba($Blue2, 0.8);
+          color: rgba($darkColor, 0.8);
           font-size: 1.7em;
         }
         #attribution {
           display: flex;
           font-family: "Ubuntu", sans-serif;
-          color: rgba($Blue2, 0.8);
+          color: rgba($darkColor, 0.8);
           font-size: 1em;
           margin-left: 15px;
           margin-top: 24px;

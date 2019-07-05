@@ -36,10 +36,22 @@ const errorLink = onError(({
 })
 
 
+// temporarily disabling cache
+const defaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore'
+    },
+    query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all'
+    }
+}
 // Create the apollo client
 export const apolloClient = new ApolloClient({
     link: errorLink.concat(httpLink),
     cache: new InMemoryCache(),
+    defaultOptions: defaultOptions,
     connectToDevTools: true
 })
 

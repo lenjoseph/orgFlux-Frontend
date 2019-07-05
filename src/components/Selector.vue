@@ -4,19 +4,19 @@
       class="selector"
       id="org-select"
       @click="organizationView();"
-      v-bind:style="[currentComponent == 'organization-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em'}: {}]"
+      v-bind:style="[currentComponent == 'organization-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', borderLeft: '2px solid #3dafab', borderBottom: '2px solid #3dafab', borderRight: '2px solid #3dafab'}: {}]"
     >Organizations</button>
     <button
       class="selector"
       id="loc-select"
       @click="locationView();"
-      v-bind:style="[currentComponent == 'location-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em'}: {}]"
+      v-bind:style="[currentComponent == 'location-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', border: '#3dafab'}: {}]"
     >Locations</button>
     <button
       class="selector"
       id="event-select"
       @click="eventView();"
-      v-bind:style="[currentComponent == 'event-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em'}: {}]"
+      v-bind:style="[currentComponent == 'event-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', border: '#3dafab'}: {}]"
     >Events</button>
   </div>
 </template>
@@ -25,7 +25,7 @@
 import { mapMutations, mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["currentComponent"])
+    ...mapGetters(["currentComponent", "darkMode"])
   },
   methods: {
     ...mapMutations(["EVENT_VIEW"]),
@@ -48,14 +48,13 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Muli");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu");
 
-$Light: #f6f6f8;
-$Icon: #cbd3e3;
-$Dark: #222629;
-$Blue1: #4ecdc4;
-$Blue2: #457b9d;
-$Blue3: #1d3557;
-$Red: #e63946;
-$Offwhite: #f1faee;
+$white: #fff;
+$black: #424242;
+$lightBlack: #232d3d;
+$primaryColor: #3dafab;
+$darkColor: #1e737c;
+$lightColor: #75e1dd;
+$secondaryColor: #f7e291;
 #container {
   display: flex;
   flex-direction: row;
@@ -70,17 +69,21 @@ $Offwhite: #f1faee;
     align-items: center;
     width: 32%;
     height: 100%;
-    background: $Blue2;
+    background-image: linear-gradient(
+      230deg,
+      $primaryColor 40%,
+      rgba($darkColor, 0.9)
+    );
     margin-left: 10px;
     margin-right: 10px;
     border: none;
     border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
+    border-bottom-right-radius: 6px;
     font-family: "Muli", sans-serif;
-    font-size: 1.1em;
-    color: $Light;
+    font-size: 1.2em;
+    color: $white;
     cursor: pointer;
-    box-shadow: 0px 3px 3px $Icon;
+    box-shadow: 0px 3px 3px lightgrey;
     transition: ease-in-out all 0.1s;
   }
   .selector:active {

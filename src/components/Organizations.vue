@@ -203,7 +203,6 @@ $secondaryColor: #f7e291;
   align-content: flex-start;
   height: 100%;
   width: 100%;
-  // box-shadow: inset 2px 0px 5px darkgrey;
   user-select: none;
   #controls {
     display: flex;

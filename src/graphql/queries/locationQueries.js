@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const GET_LOCATIONS = gql `
     query locations {
+      locations{
         locations {
         _id
         organization
@@ -17,10 +18,27 @@ export const GET_LOCATIONS = gql `
         UpdatedAt
     }
   }
+  }
 `
+
+
+export const GET_ORGANIZATIONS = gql `
+            query organizations {
+                organizations {
+                    organizations {
+                _id
+                name
+                CreatedAt
+                UpdatedAt
+            }
+        }
+    }
+`
+
+
 export const GET_LOCATION = gql `
-    query location(id:ID!) {
-        location {
+    query location($id:ID!) {
+        location(id: $id) {
         _id
         organization
         name
@@ -37,8 +55,8 @@ export const GET_LOCATION = gql `
   }
 `
 export const ORG_LOCATIONS = gql `
-    query orgLocations(id:ID!) {
-        locations {
+    query orgLocations($id:ID!) {
+        locations(id: $id) {
         _id
         organization
         name

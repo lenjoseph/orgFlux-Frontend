@@ -4,7 +4,7 @@
       class="selector"
       id="org-select"
       @click="organizationView();"
-      v-bind:style="[currentComponent == 'organization-view' ? {background: '#fff', color: '#457b9d', fontSize: '1.4em', borderLeft: '3px solid #3dafab', borderBottom: '3px solid #3dafab', borderRight: '3px solid #3dafab'}: {}]"
+      v-bind:style="[currentComponent == 'organization-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', border: '#3dafab'}: {}]"
     >Organizations</button>
     <button
       class="selector"

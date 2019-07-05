@@ -15,8 +15,8 @@ export const GET_EVENTS = gql `
 `
 
 export const GET_EVENT = gql `
-    query event(id: ID!) {
-        event {
+    query event($id: ID!) {
+        event(id: $id) {
         _id
         name
         organization
@@ -29,8 +29,8 @@ export const GET_EVENT = gql `
 `
 
 export const ORG_EVENTS = gql `
-    query orgEvents(id: ID!) {
-        events {
+    query orgEvents($id: ID!) {
+        events(id: $id) {
         _id
         name
         organization

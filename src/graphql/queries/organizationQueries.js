@@ -14,8 +14,8 @@ export const GET_ORGANIZATIONS = gql `
 `
 
 export const GET_ORGANIZATION = gql `
-    query organization(id: ID!) {
-        organization {
+    query organization($id: ID!) {
+        organization(id: $id) {
             _id
             name
             CreatedAt

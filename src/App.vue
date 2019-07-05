@@ -77,6 +77,7 @@ $secondaryColor: #f7e291;
   transition: ease-in-out all 0.2s;
   user-select: none;
   height: 100vh;
+  overflow: hidden;
   #nav {
     height: 70px;
     display: flex;

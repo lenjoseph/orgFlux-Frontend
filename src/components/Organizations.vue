@@ -1,11 +1,42 @@
 <template>
   <div id="container" v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]">
-    <div id="controls">
-      <input id="org-field" v-model="name" type="text" placeholder="Enter Organization Name..." />
+    <div id="controls" v-show="!editing">
+      <input
+        id="org-field"
+        v-model="name"
+        type="text"
+        placeholder="Enter Organization Name..."
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+      />
 
-      <button id="add-btn" @click="createOrganization();">
-        <p id="add-text">+</p>
+      <button
+        id="add-btn"
+        @click="createOrganization();"
+        :disabled="!name.length"
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]"
+      >
+        <p id="add-text" v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]">Add</p>
       </button>
+    </div>
+    <div id="edit" v-show="editing">
+      <input
+        id="edit-field"
+        type="text"
+        v-model="newName"
+        :placeholder="editOrg"
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+      />
+      <button
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+        id="save-btn"
+        @click="updateOrganization()"
+        :disabled="!newName.length"
+      >Save</button>
+      <button
+        id="cancel-btn"
+        @click="editOff();"
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+      >Cancel</button>
     </div>
     <div
       id="organizations"
@@ -17,7 +48,7 @@
         v-for="(organization, index) in organizations"
         :key="organization._id"
         :organization="organization"
-        v-bind:style="[darkMode == true ? {boxShadow: '0px 4px 4px rgba(117, 225, 221,.3)'}: {}]"
+        v-bind:style="[darkMode == true ? {boxShadow: 'none'}: {}]"
       >
         <div class="buttons">
           <span class="btn-holder">
@@ -36,7 +67,8 @@
             <span
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
-              id="edit"
+              id="edit-btn"
+              @click="editOn(organization);"
             >&#9998;</span>
           </span>
         </div>
@@ -72,23 +104,38 @@
 import { mapMutations, mapGetters } from "vuex";
 import { formatTime } from "../services/timeFormatter";
 import { GET_ORGANIZATIONS } from "../graphql/queries/organizationQueries";
-import { CREATE_ORGANIZATION } from "../graphql/mutations/organizationMutations";
+import {
+  CREATE_ORGANIZATION,
+  UPDATE_ORGANIZATION
+} from "../graphql/mutations/organizationMutations";
 import { format } from "path";
 
 export default {
   data() {
     return {
       organizations: [],
-      addingOrg: false,
-      name: ""
+      editing: false,
+      name: "",
+      editOrg: "",
+      editID: "",
+      newName: ""
     };
   },
   computed: {
     ...mapGetters(["darkMode"])
   },
   methods: {
-    addOn() {
-      this.addingOrg = !this.addingOrg;
+    editOn(organization) {
+      this.editing = true;
+      this.name = "";
+      this.editOrg = "Editing " + organization.name + "...";
+      this.editID = organization._id;
+    },
+    editOff() {
+      this.editing = false;
+      this.editOrg = "";
+      this.newName = "";
+      this.editID = "";
     },
     // fetches list of organizations
     async getOrganizations() {
@@ -109,15 +156,26 @@ export default {
     },
     // creates new organization
     async createOrganization() {
-      await this.$apollo
-        .mutate({
-          mutation: CREATE_ORGANIZATION,
-          variables: {
-            name: this.name
-          }
-        })
-        .then((this.name = ""))
-        .then(this.getOrganizations());
+      await this.$apollo.mutate({
+        mutation: CREATE_ORGANIZATION,
+        variables: {
+          name: this.name
+        }
+      });
+      this.name = "";
+      this.getOrganizations();
+    },
+    // updates existing organization
+    async updateOrganization() {
+      await this.$apollo.mutate({
+        mutation: UPDATE_ORGANIZATION,
+        variables: {
+          id: this.editID,
+          name: this.newName
+        }
+      });
+      this.editOff();
+      this.getOrganizations();
     }
   },
   created() {
@@ -141,7 +199,7 @@ $secondaryColor: #f7e291;
 #container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-content: flex-start;
   height: 100%;
   width: 100%;
@@ -151,18 +209,19 @@ $secondaryColor: #f7e291;
     display: flex;
     align-self: flex-end;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     margin-top: 30px;
     margin-right: 30px;
+    padding: 6px;
     height: 60px;
     width: 350px;
-    border-radius: 30px;
-    background: $primaryColor;
+    border-radius: 50px;
+    background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
     #org-field {
       display: flex;
-      width: 250px;
-      height: 40px;
+      width: 265px;
+      height: 36px;
       border-radius: 30px;
       border: none;
       padding-left: 10px;
@@ -180,21 +239,23 @@ $secondaryColor: #f7e291;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      height: 50px;
-      width: 50px;
-      border-radius: 50%;
+      height: 36px;
+      width: 44px;
+      border-radius: 16px;
       border: none;
       background: #fff;
       cursor: pointer;
       #add-text {
         display: flex;
         margin: auto;
-        font-size: 4.2em;
-        margin-top: -9px;
+        font-size: 1.2em;
         line-height: 1;
         font-family: "Muli", sans-serif;
-        color: $primaryColor;
+        color: $darkColor;
       }
+    }
+    #add-btn:hover {
+      box-shadow: 0px 2px 2px $black;
     }
     #add-btn:active {
       outline: none;
@@ -203,13 +264,98 @@ $secondaryColor: #f7e291;
       outline: none;
     }
   }
+  #edit {
+    display: flex;
+    align-self: flex-end;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 30px;
+    margin-right: 30px;
+    padding: 6px;
+    height: 60px;
+    width: 440px;
+    border-radius: 50px;
+    background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
+    #edit-field {
+      display: flex;
+      width: 265px;
+      height: 36px;
+      border-radius: 30px;
+      border: none;
+      padding-left: 10px;
+      font-size: 1.2em;
+      color: $darkColor;
+      font-family: "Muli", sans-serif;
+    }
+    #edit-field::placeholder {
+      color: $darkColor;
+      font-family: "Muli", sans-serif;
+    }
+    #edit-field:focus {
+      outline: none;
+    }
+    #save-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+      width: 54px;
+      border-radius: 30px;
+      border: none;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      font-size: 1em;
+      line-height: 1;
+      font-family: "Muli", sans-serif;
+      color: $darkColor;
+    }
+    #save-btn:hover {
+      box-shadow: 0px 2px 2px $black;
+    }
+    #save-btn:active {
+      box-shadow: none;
+    }
+    #save-btn:focus {
+      outline: none;
+    }
+    #cancel-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+      width: 64px;
+      border-radius: 30px;
+      border: none;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      font-size: 1em;
+      line-height: 1;
+      font-family: "Muli", sans-serif;
+      color: $darkColor;
+    }
+    #cancel-btn:hover {
+      box-shadow: 0px 2px 2px $black;
+    }
+    #cancel-btn:active {
+      box-shadow: none;
+    }
+  }
   #organizations {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: flex-start;
     flex-wrap: wrap;
-    height: calc(100% - 110px);
+    overflow: auto;
     width: 100%;
+    padding-top: 20px;
+    min-height: calc(100% - 95px);
+    max-height: 6000px;
     .organization-data {
       display: flex;
       flex-direction: column;
@@ -258,7 +404,7 @@ $secondaryColor: #f7e291;
           .btn:active {
             box-shadow: none;
           }
-          #edit {
+          #edit-btn {
             font-size: 1.3em;
           }
         }

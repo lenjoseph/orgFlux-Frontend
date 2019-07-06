@@ -58,13 +58,13 @@
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
               id="locations"
-              @click="seeLocations(organization._id);"
+              @click="orgLocations(organization._id, organization.name);"
             >Locations</span>
             <span
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
               id="events"
-              @click="seeEvents(organization._id)"
+              @click="seeEvents(organization._id, organization.name)"
             >Events</span>
           </span>
           <span class="btn-holder">
@@ -77,7 +77,6 @@
           </span>
         </div>
         <div
-          v-show="viewDefault && !viewLoc && !viewEvents"
           v-bind:style="[darkMode == true ? {borderLeft: '2px solid #75e1dd', borderBottom: '2px solid #75e1dd', borderRight: '2px solid #75e1dd', background: 'rgba(34, 38, 41, 1)'}: {}]"
           class="data"
         >
@@ -100,38 +99,14 @@
             </div>
           </div>
         </div>
-        <div
-          class="view-locations"
-          v-show="!viewDefault && viewLoc && !viewEvents"
-          v-for="(location, index) in orgLocs"
-          :key="location._id"
-          :location="location"
-        >
-          <div id="loc-name">
-            <p id="loc-name-text">{{location.name}}</p>
-          </div>
-          <div id="loc-location">
-            <div id="loc-address">
-              <p id="loc-address-text">{{location.address}}</p>
-            </div>
-            <div id="loc-place">
-              <div id="loc-place-1">
-                <p id="loc-city">{{location.city}}</p>
-                <p id="loc-state">{{location.state}}</p>
-              </div>
-              <div id="loc-place-2">
-                <p id="loc-country">{{location.country}}</p>
-                <p id="loc-zip">{{location.zip}}</p>
-              </div>
-            </div>
-          </div>
-          <div id="loc-coordinates">
-            <p id="loc-lat">{{location.latitude}}</p>
-            <p id="loc-long">{{location.longitude}}</p>
-          </div>
-        </div>
       </div>
     </div>
+    <show-locations
+      :showLocs="showLocs"
+      :orgLocs="orgLocs"
+      :currentOrg="currentOrg"
+      @close="showLocs=false"
+    ></show-locations>
   </div>
 </template>
 
@@ -146,8 +121,12 @@ import {
 import { format } from "path";
 import { ORG_LOCATIONS } from "../../graphql/queries/locationQueries";
 import { ORG_EVENTS } from "../../graphql/queries/eventQueries";
+import ShowLocations from "./ShowLocations";
 
 export default {
+  components: {
+    showLocations: ShowLocations
+  },
   data() {
     return {
       organizations: [],
@@ -156,29 +135,17 @@ export default {
       editOrg: "",
       editID: "",
       newName: "",
-      viewDefault: true,
-      viewLoc: false,
-      viewEvents: false,
       orgLocs: [],
-      orgEvs: []
+      orgEvs: [],
+      currentOrg: "",
+      showLocs: false,
+      showEvents: false
     };
   },
   computed: {
     ...mapGetters(["darkMode"])
   },
   methods: {
-    seeLocations(id) {
-      this.viewLoc = true;
-      this.default = false;
-      this.viewEvents = false;
-      this.orgLocations(id);
-    },
-    seeEvents(id) {
-      this.viewLoc = false;
-      this.default = false;
-      this.viewEvents = true;
-      this.orgEvents(id);
-    },
     defaultView() {
       this.viewLoc = false;
       this.viewDefault = true;
@@ -213,8 +180,8 @@ export default {
           this.organizations = organizations;
         });
     },
-    // gets Locations for specific organization (passing)
-    async orgLocations(id) {
+    // gets Locations for specific organization
+    async orgLocations(id, name) {
       const response = await this.$apollo
         .query({
           query: ORG_LOCATIONS,
@@ -223,11 +190,13 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data.orgLocations.locations);
+          this.orgLocs = response.data.orgLocations.locations;
         });
+      this.currentOrg = name;
+      this.showLocs = true;
     },
     // gets events for specific organization
-    async orgEvents(id) {
+    async orgEvents(id, name) {
       const response = await this.$apollo
         .query({
           query: ORG_EVENTS
@@ -235,6 +204,8 @@ export default {
         .then(response => {
           this.orgEvs = response.data.events.events;
         });
+      this.currentOrg = name;
+      this.showEvents = true;
     },
     // creates new organization
     async createOrganization() {
@@ -294,9 +265,7 @@ $secondaryColor: #f7e291;
     align-items: center;
     margin-top: 30px;
     margin-right: 30px;
-    padding: 6px;
-    height: 60px;
-    width: 350px;
+    padding: 8px;
     border-radius: 50px;
     background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
     #org-field {
@@ -306,6 +275,7 @@ $secondaryColor: #f7e291;
       border-radius: 30px;
       border: none;
       padding-left: 10px;
+      margin-right: 14px;
     }
     #org-field:focus {
       outline: none;
@@ -353,14 +323,12 @@ $secondaryColor: #f7e291;
     align-items: center;
     margin-top: 30px;
     margin-right: 30px;
-    padding: 6px;
-    height: 60px;
-    width: 440px;
+    padding: 8px;
     border-radius: 50px;
     background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
     #edit-field {
       display: flex;
-      width: 265px;
+      width: 300px;
       height: 36px;
       border-radius: 30px;
       border: none;
@@ -368,6 +336,7 @@ $secondaryColor: #f7e291;
       font-size: 1.2em;
       color: $darkColor;
       font-family: "Muli", sans-serif;
+      margin-right: 14px;
     }
     #edit-field::placeholder {
       color: $darkColor;
@@ -383,6 +352,7 @@ $secondaryColor: #f7e291;
       align-items: center;
       height: 36px;
       width: 54px;
+      margin-right: 6px;
       border-radius: 30px;
       border: none;
       background: #fff;

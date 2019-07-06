@@ -36,7 +36,7 @@ const errorLink = onError(({
 })
 
 
-// temporarily disabling cache
+//disabling default apollo cache
 const defaultOptions = {
     watchQuery: {
         fetchPolicy: 'no-cache',

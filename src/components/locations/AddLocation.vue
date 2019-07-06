@@ -64,7 +64,14 @@
             </div>
             <div class="info-wrapper">
               <label class="label" for="zip">Zip Code</label>
-              <input class="field" id="zip" v-model="zip" type="number" placeholder="12345" />
+              <input
+                class="field"
+                id="zip"
+                v-model="zip"
+                type="number"
+                placeholder="12345"
+                maxlength="5"
+              />
             </div>
           </div>
         </div>
@@ -148,6 +155,14 @@ export default {
       this.$emit("close");
     }
   },
+  mounted: function() {
+    document.addEventListener("keydown", e => {
+      if (this.show && e.keyCode == 27) {
+        this.cancelAdd();
+      }
+    });
+  },
+
   created() {
     this.getOrganizations();
   }
@@ -327,6 +342,16 @@ $secondaryColor: #f7e291;
         border: none;
         font-family: "Ubuntu", sans-serif;
         font-size: 1em;
+      }
+      .button:hover {
+        box-shadow: 0px 2px 2px lightgrey;
+      }
+      .button:active {
+        box-shadow: none;
+        outline: none;
+      }
+      .button:focus {
+        outline: none;
       }
       #cancel {
         margin-right: 30px;

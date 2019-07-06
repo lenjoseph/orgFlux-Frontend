@@ -146,10 +146,28 @@ $secondaryColor: #f7e291;
     margin-top: 30px;
     margin-right: 30px;
     padding: 6px;
-    height: 60px;
-    width: 350px;
     border-radius: 50px;
     background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
+    #add {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      background: #fff;
+      font-family: "Muli", sans-serif;
+      font-size: 1.1em;
+      color: $darkColor;
+      height: 40px;
+      width: 150px;
+      border-radius: 40px;
+      border: none;
+    }
+    #add:active {
+      box-shadow: inset 0px 0px 3px 1px grey;
+      outline: none;
+    }
+    #add:focus {
+      outline: none;
+    }
   }
   #locations {
     display: flex;

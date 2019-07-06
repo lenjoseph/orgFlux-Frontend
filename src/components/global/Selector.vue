@@ -69,11 +69,7 @@ $secondaryColor: #f7e291;
     align-items: center;
     width: 32%;
     height: 100%;
-    background-image: linear-gradient(
-      230deg,
-      $primaryColor 40%,
-      rgba($darkColor, 0.9)
-    );
+    background-image: linear-gradient(230deg, #0ad8a7, $primaryColor);
     margin-left: 10px;
     margin-right: 10px;
     border: none;

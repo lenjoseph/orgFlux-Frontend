@@ -38,10 +38,11 @@ mutation createOrganization($name: String!) {
         }
 }
 `
-
+// pasing
 export const UPDATE_LOCATION = gql `
-    mutation updateLocation($id: ID!, $locationInput: locationInputData!) {
-    updateLocation(id: $id, locationInput: {
+    mutation updateLocation($id: ID!, $organization: String!, $name: String!, $address: String!, $city: String!, $state: String!, $country: String!, $zip: Int) {
+    updateLocation(
+        id: $id
         organization: $organization,
         name: $name,
         address: $address,
@@ -49,7 +50,7 @@ export const UPDATE_LOCATION = gql `
         state: $state
         country: $country
         zip: $zip
-    }) {
+        ) {
         _id
         organization
         name

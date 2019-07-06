@@ -10,7 +10,7 @@ export default new Vuex.Store({
 
   state: {
     component: 'organization-view',
-    darkmode: false
+    darkmode: false,
   },
   getters: {
     currentComponent: state => {

@@ -24,6 +24,12 @@
 <script>
 import { mapMutations, mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      activeDark: "dark-mode-active",
+      inactiveDark: "dark-mode-inactive"
+    };
+  },
   computed: {
     ...mapGetters(["currentComponent", "darkMode"])
   },
@@ -55,6 +61,7 @@ $primaryColor: #3dafab;
 $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
+
 #container {
   display: flex;
   flex-direction: row;

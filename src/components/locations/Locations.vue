@@ -1,23 +1,42 @@
 <template>
   <div id="container">
     <div id="controls">
-      <button id="add" @click="showAddFunc();">Add Location</button>
+      <button
+        id="add"
+        @click="showAddFunc();"
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+      >Add Location</button>
     </div>
-    <div id="locations">
+    <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
       <div
         id="location"
         class="location"
         v-for="(location,index) in locations"
         :key="location._id"
         :location="location"
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', borderBottom: '1px solid #4dafab'}: {}]"
       >
-        <div id="buttons">
-          <button class="btn" id="delete" @click="deleteLocation(location._id)">X</button>
-          <button class="btn" id="edit">&#9998;</button>
+        <div
+          id="buttons"
+          v-bind:style="[darkMode == true ? {background: '  linear-gradient(-90deg, #0ad8a7, #3dafab)'}: {}]"
+        >
+          <button
+            class="btn"
+            id="delete"
+            @click="deleteLocation(location._id)"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#ff7f7e'}: {}]"
+          >X</button>
+          <button
+            class="btn"
+            id="edit"
+            @click="showUpdateFunc(location._id);"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+          >&#9998;</button>
           <button
             class="btn"
             id="organization"
             @click="getOrganization(location.name, location.organization);"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
           >View Organization</button>
         </div>
         <div id="data">
@@ -49,23 +68,37 @@
       </div>
     </div>
     <add-location :show="showAdd" @close="showAdd=false"></add-location>
+    <update-location
+      :show="showUpdate"
+      :updateID="locationID"
+      :source="source"
+      @close="showUpdate=false"
+    ></update-location>
   </div>
 </template>
 
 <script>
-import { GET_LOCATIONS } from "../../graphql/queries/locationQueries";
+import {
+  GET_LOCATIONS,
+  GET_LOCATION
+} from "../../graphql/queries/locationQueries";
 import AddLocation from "./AddLocation";
+import UpdateLocation from "./UpdateLocation";
 import { mapGetters } from "vuex";
 import { DELETE_LOCATION } from "../../graphql/mutations/locationMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
 export default {
   components: {
-    addLocation: AddLocation
+    addLocation: AddLocation,
+    updateLocation: UpdateLocation
   },
   data() {
     return {
       locations: [],
-      showAdd: false
+      showAdd: false,
+      showUpdate: false,
+      locationID: "",
+      source: ""
     };
   },
   computed: {
@@ -82,6 +115,19 @@ export default {
           if (response.data.locations.locations.length) {
             this.locations = response.data.locations.locations;
           }
+        });
+    },
+    // gets current data for selected location
+    async getLocation(updateID) {
+      await this.$apollo
+        .query({
+          query: GET_LOCATION,
+          variables: {
+            id: updateID
+          }
+        })
+        .then(response => {
+          this.source = response.data.location;
         });
     },
     // gets organization for selected location (passing)
@@ -109,6 +155,14 @@ export default {
     },
     showAddFunc() {
       this.showAdd = true;
+    },
+    setID(id) {
+      this.locationID = id;
+    },
+    async showUpdateFunc(id) {
+      await this.getLocation(id);
+      console.log(this.source);
+      this.showUpdate = true;
     }
   },
   created() {
@@ -133,7 +187,7 @@ $secondaryColor: #f7e291;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-content: flex-start;
+  align-content: center;
   height: 100%;
   width: 100%;
   user-select: none;
@@ -160,6 +214,7 @@ $secondaryColor: #f7e291;
       width: 150px;
       border-radius: 40px;
       border: none;
+      cursor: pointer;
     }
     #add:active {
       box-shadow: inset 0px 0px 3px 1px grey;
@@ -173,23 +228,22 @@ $secondaryColor: #f7e291;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-self: center;
     align-items: center;
     flex-wrap: nowrap;
     height: 100%;
-    width: 100%;
+    width: 95%;
     padding-bottom: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 20px;
+    margin-top: 20px;
     overflow-y: auto;
+    border-top: 1px solid #dddddd;
 
     .location {
       display: flex;
       flex-direction: row;
       height: 60px;
-      width: 98%;
+      width: 100%;
       border-bottom: 1px solid #dddddd;
-      transition: all 0.3s ease-in-out;
       background: #fff;
       font-family: "Ubuntu", sans-serif;
       #buttons {
@@ -235,7 +289,6 @@ $secondaryColor: #f7e291;
         display: flex;
         flex-direction: row;
         height: 100%;
-        width: 100%;
         .data-element {
           display: flex;
           height: 100%;
@@ -245,7 +298,6 @@ $secondaryColor: #f7e291;
             padding: 15px;
             font-family: "Muli", sans-serif;
             font-size: 0.8em;
-            overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
             margin: auto;

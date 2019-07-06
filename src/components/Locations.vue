@@ -1,6 +1,8 @@
 <template>
   <div id="container">
-    <div id="controls"></div>
+    <div id="controls">
+      <button id="add" @click="showAddFunc();">Add Location</button>
+    </div>
     <div id="locations">
       <div
         id="location"
@@ -10,13 +12,43 @@
         :location="location"
       >
         <div id="buttons">
-          <button id="delete">X</button>
-          <button id="edit">&#9998;</button>
-          <button id="organization">Organization</button>
+          <button class="btn" id="delete" @click="deleteLocation(location._id)">X</button>
+          <button class="btn" id="edit">&#9998;</button>
+          <button
+            class="btn"
+            id="organization"
+            @click="getOrganization(location.name, location.organization);"
+          >View Organization</button>
+        </div>
+        <div id="data">
+          <div class="data-element" id="name">
+            <p class="text">{{location.name}}</p>
+          </div>
+          <div class="data-element" id="address">
+            <p class="text">{{location.address}}</p>
+          </div>
+          <div class="data-element" id="city">
+            <p class="text">{{location.city}}</p>
+          </div>
+          <div class="data-element" id="state">
+            <p class="text">{{location.state}}</p>
+          </div>
+          <div class="data-element" id="country">
+            <p class="text">{{location.country}}</p>
+          </div>
+          <div class="data-element" id="zip">
+            <p class="text">{{location.zip}}</p>
+          </div>
+          <div class="data-element" id="latitude">
+            <p class="text">{{location.latitude}}</p>
+          </div>
+          <div class="data-element" id="longitude">
+            <p class="text">{{location.longitude}}</p>
+          </div>
         </div>
       </div>
     </div>
-    <add-location :v-show="showAdd" @close="showAdd=false"></add-location>
+    <add-location :show="showAdd" @close="showAdd=false"></add-location>
   </div>
 </template>
 
@@ -24,6 +56,8 @@
 import { GET_LOCATIONS } from "../graphql/queries/locationQueries";
 import AddLocation from "./AddLocation";
 import { mapGetters } from "vuex";
+import { DELETE_LOCATION } from "../graphql/mutations/locationMutations";
+import { GET_ORGANIZATION } from "../graphql/queries/organizationQueries";
 export default {
   components: {
     addLocation: AddLocation
@@ -31,14 +65,14 @@ export default {
   data() {
     return {
       locations: [],
-      showAdd: true
+      showAdd: false
     };
   },
   computed: {
     ...mapGetters(["darkMode"])
   },
   methods: {
-    // fetches list of locations
+    // fetches list of locations (passing)
     async getLocations() {
       const response = await this.$apollo
         .query({
@@ -49,6 +83,32 @@ export default {
             this.locations = response.data.locations.locations;
           }
         });
+    },
+    // gets organization for selected location (passing)
+    async getOrganization(name, id) {
+      await this.$apollo
+        .query({
+          query: GET_ORGANIZATION,
+          variables: {
+            id: id
+          }
+        })
+        .then(response => {
+          alert(name + " belongs to " + response.data.organization.name + ".");
+        });
+    },
+    // deletes location (passing)
+    async deleteLocation(id) {
+      await this.$apollo.mutate({
+        mutation: DELETE_LOCATION,
+        variables: {
+          id: id
+        }
+      });
+      this.getLocations();
+    },
+    showAddFunc() {
+      this.showAdd = true;
     }
   },
   created() {
@@ -109,11 +169,71 @@ $secondaryColor: #f7e291;
       display: flex;
       flex-direction: row;
       height: 60px;
-      width: 95%;
+      width: 98%;
       border-bottom: 1px solid #dddddd;
       transition: all 0.3s ease-in-out;
       background: #fff;
       font-family: "Ubuntu", sans-serif;
+      #buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+        .btn {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          height: 50%;
+          width: 25px;
+          margin: 5px;
+          border-radius: 4px;
+          border: none;
+          background: rgba($primaryColor, 0.6);
+          font-family: "Ubuntu", sans-serif;
+          cursor: pointer;
+        }
+        .btn:hover {
+          box-shadow: 0px 2px 2px lightgrey;
+        }
+        .btn:active {
+          box-shadow: none;
+          outline: none;
+        }
+        .btn:focus {
+          outline: none;
+        }
+        #organization {
+          width: 130px;
+        }
+        #edit {
+          font-size: 1em;
+        }
+        #delete {
+          background: rgba(red, 0.5);
+          font-weight: bold;
+        }
+      }
+      #data {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        width: 100%;
+        .data-element {
+          display: flex;
+          height: 100%;
+          align-items: flex-start;
+          .text {
+            display: flex;
+            padding: 15px;
+            font-family: "Muli", sans-serif;
+            font-size: 0.8em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin: auto;
+          }
+        }
+      }
     }
   }
 }

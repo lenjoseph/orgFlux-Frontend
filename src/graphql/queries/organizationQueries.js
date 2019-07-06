@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+// passing
 export const GET_ORGANIZATIONS = gql `
             query organizations {
                 organizations {
@@ -13,13 +14,11 @@ export const GET_ORGANIZATIONS = gql `
     }
 `
 
+// passing
 export const GET_ORGANIZATION = gql `
-    query organization($id: ID!) {
+    query organization($id: String!) {
         organization(id: $id) {
-            _id
             name
-            CreatedAt
-            UpdatedAt
         }
     }
 `

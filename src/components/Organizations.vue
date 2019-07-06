@@ -26,6 +26,7 @@
         v-model="newName"
         :placeholder="editOrg"
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+        @keydown.enter="updateOrganization();"
       />
       <button
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
@@ -170,6 +171,7 @@ export default {
       this.viewLoc = true;
       this.default = false;
       this.viewEvents = false;
+      console.log(id);
       this.orgLocations(id);
     },
     seeEvents(id) {
@@ -212,14 +214,18 @@ export default {
           this.organizations = organizations;
         });
     },
-    // gets Locations for specific organization
+    // gets Locations for specific organization (passing)
     async orgLocations(id) {
+      console.log(id);
       const response = await this.$apollo
         .query({
-          query: ORG_LOCATIONS
+          query: ORG_LOCATIONS,
+          variables: {
+            id: id
+          }
         })
         .then(response => {
-          this.orgLocs = response.data.locations.locations;
+          console.log(response.data.orgLocations.locations);
         });
     },
     // gets events for specific organization
@@ -420,6 +426,9 @@ $secondaryColor: #f7e291;
     }
     #cancel-btn:active {
       box-shadow: none;
+    }
+    #cancel-btn:focus {
+      outline: none;
     }
   }
   #organizations {

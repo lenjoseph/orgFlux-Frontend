@@ -1,8 +1,9 @@
 import gql from 'graphql-tag'
 
+// passing
 export const CREATE_LOCATION = gql `
-  mutation createLocation($locationInput: locationInputData!) {
-        createLocation(locationInput: {
+  mutation createLocation($organization: String!, $name: String!, $address: String!, $city: String!, $state: String!, $country: String!, $zip: Int) {
+        createLocation(
             organization: $organization,
             name: $name,
             address: $address,
@@ -10,7 +11,7 @@ export const CREATE_LOCATION = gql `
             state: $state
             country: $country
             zip: $zip
-        }) {
+        ) {
             _id
             organization
             name
@@ -25,6 +26,17 @@ export const CREATE_LOCATION = gql `
             UpdatedAt
         }
     }
+`
+
+export const CREATE_ORGANIZATION = gql `
+mutation createOrganization($name: String!) {
+    createOrganization(name: $name) {
+                _id
+                name
+                CreatedAt
+                UpdatedAt
+        }
+}
 `
 
 export const UPDATE_LOCATION = gql `
@@ -53,11 +65,11 @@ export const UPDATE_LOCATION = gql `
     }
 }
 `
-
+// passing
 export const DELETE_LOCATION = gql `
     mutation deleteLocation($id: ID!) {
         deleteLocation(id:$id) {
-            Boolean
+            name
         }
     }
 `

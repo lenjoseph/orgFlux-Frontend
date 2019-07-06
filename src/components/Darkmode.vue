@@ -60,7 +60,7 @@ $Offwhite: #f1faee;
     width: 90px;
     border-radius: 6px;
     border: none;
-    background: rgba($Blue1, 1);
+    background: #f2f2fe;
     color: $Dark;
     margin-right: 8px;
     box-shadow: 0px 2px 2px lightgrey;

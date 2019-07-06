@@ -9,10 +9,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import OrganizationView from "../components/Organizations";
-import LocationView from "../components/Locations";
-import EventView from "../components/Events";
-import ViewSelector from "../components/Selector";
+import OrganizationView from "../components/organizations/Organizations";
+import LocationView from "../components/locations/Locations";
+import EventView from "../components/events/Events";
+import ViewSelector from "../components/global/Selector";
 
 export default {
   name: "home",

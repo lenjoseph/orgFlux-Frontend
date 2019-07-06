@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import DarkButton from "./components/Darkmode";
+import DarkButton from "./components/global/Darkmode";
 import { mapGetters } from "vuex";
 export default {
   components: {

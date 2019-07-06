@@ -83,8 +83,8 @@
 </template>
 
 <script>
-import { CREATE_LOCATION } from "../graphql/mutations/locationMutations";
-import { GET_ORGANIZATIONS } from "../graphql/queries/organizationQueries";
+import { CREATE_LOCATION } from "../../graphql/mutations/locationMutations";
+import { GET_ORGANIZATIONS } from "../../graphql/queries/organizationQueries";
 export default {
   props: ["show"],
   data() {

@@ -137,15 +137,15 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
-import { formatTime } from "../services/timeFormatter";
-import { GET_ORGANIZATIONS } from "../graphql/queries/organizationQueries";
+import { formatTime } from "../../services/timeFormatter";
+import { GET_ORGANIZATIONS } from "../../graphql/queries/organizationQueries";
 import {
   CREATE_ORGANIZATION,
   UPDATE_ORGANIZATION
-} from "../graphql/mutations/organizationMutations";
+} from "../../graphql/mutations/organizationMutations";
 import { format } from "path";
-import { ORG_LOCATIONS } from "../graphql/queries/locationQueries";
-import { ORG_EVENTS } from "../graphql/queries/eventQueries";
+import { ORG_LOCATIONS } from "../../graphql/queries/locationQueries";
+import { ORG_EVENTS } from "../../graphql/queries/eventQueries";
 
 export default {
   data() {
@@ -171,7 +171,6 @@ export default {
       this.viewLoc = true;
       this.default = false;
       this.viewEvents = false;
-      console.log(id);
       this.orgLocations(id);
     },
     seeEvents(id) {
@@ -216,7 +215,6 @@ export default {
     },
     // gets Locations for specific organization (passing)
     async orgLocations(id) {
-      console.log(id);
       const response = await this.$apollo
         .query({
           query: ORG_LOCATIONS,

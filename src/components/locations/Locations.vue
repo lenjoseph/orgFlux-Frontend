@@ -53,11 +53,11 @@
 </template>
 
 <script>
-import { GET_LOCATIONS } from "../graphql/queries/locationQueries";
+import { GET_LOCATIONS } from "../../graphql/queries/locationQueries";
 import AddLocation from "./AddLocation";
 import { mapGetters } from "vuex";
-import { DELETE_LOCATION } from "../graphql/mutations/locationMutations";
-import { GET_ORGANIZATION } from "../graphql/queries/organizationQueries";
+import { DELETE_LOCATION } from "../../graphql/mutations/locationMutations";
+import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
 export default {
   components: {
     addLocation: AddLocation

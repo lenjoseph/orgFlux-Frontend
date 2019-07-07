@@ -20,7 +20,7 @@
           >X</button>
         </div>
         <div class="no-locs" v-show="!orgEvs.length">
-          <p class="text" id="no-locs-text">No locations to show for this organization.</p>
+          <p class="text" id="no-locs-text">No events to show for this organization.</p>
         </div>
         <div id="loc-wrapper">
           <div

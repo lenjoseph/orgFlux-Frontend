@@ -1,6 +1,6 @@
 <template>
   <transition name="addLoc">
-    <div id="container" @click="cancelAdd();" v-show="show">
+    <div id="container" @click="cancelUpdate();" v-show="show">
       <div id="sub-container" @click.stop>
         <div id="header-wrap">
           <p id="header">Update Location</p>
@@ -145,6 +145,13 @@ export default {
     }
   },
   mounted() {
+    document.addEventListener("keydown", e => {
+      if (this.show && e.keyCode == 27) {
+        this.cancelUpdate();
+      }
+    });
+  },
+  created() {
     this.getOrganizations();
   }
 };

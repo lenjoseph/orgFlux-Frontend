@@ -1,9 +1,23 @@
 <template>
   <transition name="showLoc">
     <div id="container" @click="closeWindow();" v-show="showLocs">
-      <div id="sub-container" @click.stop>
+      <div
+        id="sub-container"
+        @click.stop
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
+      >
         <div class="wrapper" id="header-wrap">
-          <p class="text" id="header">{{currentOrg}}'s Locations</p>
+          <p
+            class="text"
+            id="header"
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+          >{{currentOrg}}'s Locations</p>
+          <button
+            class="text"
+            id="close"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border: '1px solid #75e1dd'}: {}]"
+            @click="closeWindow();"
+          >X</button>
         </div>
         <div class="no-locs" v-show="!orgLocs.length">
           <p class="text" id="no-locs-text">No locations to show for this organization.</p>
@@ -16,27 +30,59 @@
             v-show="orgLocs.length"
             :key="location._id"
             :location="location"
+            v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)', background: 'linear-gradient(90deg, #0ad8a7, #3dafab)'}: {}]"
           >
             <div class="loc-info" id="info-1">
-              <p class="loc-text" id="loc-name">{{location.name}}</p>
+              <p
+                class="loc-text"
+                id="loc-name"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.name}}</p>
             </div>
             <div class="loc-info" id="info-2">
-              <p class="loc-text">{{location.address}}</p>
-              <p class="loc-text">{{location.city}}</p>
-              <p class="loc-text">{{location.state}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.address}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.city}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.state}}</p>
             </div>
             <div class="loc-info" id="info-3">
-              <p class="loc-text">{{location.country}}</p>
-              <p class="loc-text">{{location.zip}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.country}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.zip}}</p>
             </div>
 
             <div class="loc-info" id="info-4">
-              <p class="loc-text">{{location.latitude}}</p>
-              <p class="loc-text">{{location.longitude}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.latitude}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.longitude}}</p>
             </div>
             <div class="loc-info" id="info-5">
-              <p class="loc-text">{{location.CreatedAt}}</p>
-              <p class="loc-text">{{location.UpdatedAt}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.CreatedAt}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{location.UpdatedAt}}</p>
             </div>
           </div>
         </div>
@@ -46,8 +92,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: ["showLocs", "orgLocs", "currentOrg"],
+  computed: {
+    ...mapGetters(["darkMode"])
+  },
   methods: {
     closeWindow() {
       this.$emit("close");
@@ -148,14 +198,44 @@ $secondaryColor: #f7e291;
       color: $darkColor;
     }
     #header-wrap {
-      position: fixed;
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
       height: 30px;
       #header {
         display: flex;
+        width: 100%;
+        margin-right: -30px;
+        flex-direction: row;
+        justify-content: center;
         font-family: "Muli", sans-serif;
         font-size: 1.5em;
         color: $darkColor;
+      }
+      #close {
+        display: flex;
+        height: 30px;
+        width: 30px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 2px solid rgba(red, 0.6);
+        color: rgba(red, 0.7);
+        line-height: 1;
+        background: #fff;
+        cursor: pointer;
+      }
+      #close:hover {
+        box-shadow: 0px 2px 2px lightgrey;
+      }
+      #close:active {
+        box-shadow: none;
+        outline: none;
+      }
+      #close:focus {
+        outline: none;
       }
     }
     #loc-wrapper {
@@ -165,7 +245,7 @@ $secondaryColor: #f7e291;
       width: 100%;
       overflow: auto;
       overflow-x: hidden;
-      margin-top: 30px;
+      margin-top: 20px;
       #locations {
         display: flex;
         margin-top: 40px;
@@ -176,9 +256,10 @@ $secondaryColor: #f7e291;
         .loc-info {
           display: flex;
           flex-direction: row;
-          justify-content: center;
+          justify-content: space-evenly;
           margin-bottom: 10px;
           .loc-text {
+            display: flex;
             font-family: "Muli", sans-serif;
             color: rgba($black, 0.9);
             margin-left: 10px;

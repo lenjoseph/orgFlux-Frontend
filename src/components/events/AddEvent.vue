@@ -7,7 +7,7 @@
         </div>
         <div id="org-select">
           <p id="org-prompt">Please select an organization for this event:</p>
-          <select v-model="organization" id="org-picker">
+          <select v-model="organization" class="select" id="org-picker">
             <option disabled selected value>Select Organization</option>
             <option v-for="org in organizations" :value="org">{{org.name}}</option>
           </select>
@@ -16,13 +16,7 @@
           <div id="info-1">
             <div class="info-wrapper">
               <label for="name" class="label">Name</label>
-              <input
-                class="field"
-                id="name"
-                v-model="name"
-                type="text"
-                placeholder="e.g. Northeast Office"
-              />
+              <input class="field" id="name" v-model="name" type="text" placeholder="Team Offsite" />
             </div>
             <div class="info-wrapper">
               <label class="label" for="address">Description</label>
@@ -31,20 +25,50 @@
                 id="address"
                 v-model="description"
                 type="text"
-                placeholder="e.g. 123 Cowabunga Dr."
+                placeholder="Celebrating our latest innovations."
               />
             </div>
           </div>
           <div id="info-2">
-            <div class="info-wrapper">
-              <label class="label" for="city">Event Date</label>
-              <input
-                class="field"
-                id="city"
-                v-model="eventDate"
-                type="text"
-                placeholder="e.g. New York"
-              />
+            <div class="info-wrapper" id="dates">
+              <div id="date-header">
+                <p class="label">Event Date</p>
+              </div>
+              <div class="select-wrapper" id="date-selector">
+                <select v-model="month" class="select" id="month">
+                  <option selected value>{{this.months[0]}}</option>
+                  <option v-for="selection in months" :value="selection">{{selection}}</option>
+                </select>
+                <select v-model="day" class="select" id="day">
+                  <option selected value>{{this.days[0]}}</option>
+                  <option v-for="selection in days" :value="selection">{{selection}}</option>
+                </select>
+                <select v-model="year" class="select" id="year">
+                  <option selected value>{{this.years[0]}}</option>
+                  <option v-for="selection in years" :value="selection">{{selection}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="info-wrapper" id="times">
+              <div id="time-header">
+                <p class="label">Event Time</p>
+              </div>
+              <div class="select-wrapper" id="time-selector">
+                <select v-model="hour" class="select" id="hour">
+                  <option selected value>{{this.hours[11]}}</option>
+                  <option v-for="selection in hours" :value="selection">{{selection}}</option>
+                </select>
+
+                <select v-model="minute" class="select" id="minute">
+                  <option selected value>{{this.minutes[0]}}</option>
+                  <option v-for="selection in minutes" :value="selection">{{selection}}</option>
+                </select>
+                <select v-model="meridiem" class="select" id="meridiem">
+                  <option selected value>AM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -70,18 +94,75 @@ export default {
   data() {
     return {
       organizations: [],
+      years: [],
+      months: [],
+      days: [],
+      hours: [],
+      minutes: [],
       organization: "",
+      year: "",
+      month: "",
+      day: "",
+      hour: "",
+      minute: "",
+      meridiem: "",
       name: "",
       description: "",
-      eventDate: ""
+      eventDate: "",
+      eventTime: ""
     };
   },
   methods: {
+    // generates dropdown options for date selection
+    genDates() {
+      this.months.push(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      );
+
+      for (let i = 1; i <= 31; i++) {
+        if (i < 10) {
+          this.days.push("0" + i);
+        } else {
+          this.days.push(i);
+        }
+      }
+
+      for (let i = 2019; i <= 2100; i++) {
+        this.years.push(i);
+      }
+    },
+    // generates dropdown options for time selection
+    genTime() {
+      for (let i = 1; i <= 12; i++) {
+        this.hours.push(i);
+      }
+
+      for (let i = 0; i <= 60; i++) {
+        if (i < 10) {
+          this.minutes.push("0" + i);
+        } else {
+          this.minutes.push(i);
+        }
+      }
+    },
+    // clears data
     clear() {
       this.organization = "";
       this.name = "";
       this.description = "";
       this.eventDate = "";
+      this.eventTime = "";
     },
     // cancels add location
     cancelAdd() {
@@ -99,6 +180,14 @@ export default {
 
     // passing
     async createEvent() {
+      const month = this.month ? this.month : this.months[0];
+      const day = this.day ? this.day : this.days[0];
+      const year = this.year ? this.year : this.years[0];
+      const hour = this.hour ? this.hour : this.hours[11];
+      const minute = this.minute ? this.minute : this.minutes[0];
+      const meridiem = this.meridiem ? this.meridiem : " AM";
+
+      console.log(hour + ":" + minute + " " + meridiem);
       await this.$apollo
         .mutate({
           mutation: CREATE_EVENT,
@@ -106,7 +195,8 @@ export default {
             organization: this.organization._id,
             name: this.name,
             description: this.description,
-            eventDate: this.eventDate
+            eventDate: month + " " + day + ", " + year,
+            eventTime: hour + ":" + minute + " " + meridiem
           }
         })
         .then(response => {
@@ -127,6 +217,8 @@ export default {
 
   created() {
     this.getOrganizations();
+    this.genTime();
+    this.genDates();
   }
 };
 </script>
@@ -202,6 +294,15 @@ $secondaryColor: #f7e291;
     border-radius: 6px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.33);
     z-index: 9999;
+    .select {
+      display: flex;
+      font-size: 1em;
+      font-family: "Muli", sans-serif;
+      border-radius: 10px;
+    }
+    .select:focus {
+      outline: none;
+    }
     #header-wrap {
       display: flex;
       #header {
@@ -223,15 +324,6 @@ $secondaryColor: #f7e291;
         font-family: "Muli", sans-serif;
         font-size: 1.2em;
         color: $darkColor;
-      }
-      #org-picker {
-        display: flex;
-        font-size: 1em;
-        font-family: "Muli", sans-serif;
-        border-radius: 10px;
-      }
-      #org-picker:focus {
-        outline: none;
       }
     }
     #location-info {
@@ -267,6 +359,10 @@ $secondaryColor: #f7e291;
         flex-direction: column;
         align-items: center;
         width: 100%;
+        .select-wrapper {
+          display: flex;
+          flex-direction: row;
+        }
       }
       #info-1 {
         display: flex;

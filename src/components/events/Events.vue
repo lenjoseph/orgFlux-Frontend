@@ -7,6 +7,20 @@
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
       >Add Event</button>
     </div>
+    <div id="labels">
+      <div class="label" id="name-col">
+        <p class="label-text">Name</p>
+      </div>
+      <div class="label" id="description-col">
+        <p class="label-text">Description</p>
+      </div>
+      <div class="label" id="date-col">
+        <p class="label-text">Date</p>
+      </div>
+      <div class="label" id="time-col">
+        <p class="label-text">Time</p>
+      </div>
+    </div>
     <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
       <div
         id="location"
@@ -43,11 +57,14 @@
           <div class="data-element" id="name">
             <p class="text">{{event.name}}</p>
           </div>
-          <div class="data-element" id="address">
+          <div class="data-element" id="description">
             <p class="text">{{event.description}}</p>
           </div>
-          <div class="data-element" id="city">
+          <div class="data-element" id="date">
             <p class="text">{{event.eventDate}}</p>
+          </div>
+          <div class="data-element" id="time">
+            <p class="text">{{event.eventTime}}</p>
           </div>
         </div>
       </div>
@@ -89,9 +106,7 @@ export default {
           query: GET_EVENTS
         })
         .then(response => {
-          if (response.data.events.events.length) {
-            this.events = response.data.events.events;
-          }
+          this.events = response.data.events.events;
         });
     },
     // gets current data for selected event
@@ -201,6 +216,26 @@ $secondaryColor: #f7e291;
       outline: none;
     }
   }
+  #labels {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: calc(100% - 262px);
+    margin-left: 262px;
+    font-family: "Ubuntu", sans-serif;
+    #name-col {
+      width: 20%;
+    }
+    #description-col {
+      width: 50%;
+    }
+    #date-col {
+      width: 15%;
+    }
+    #time-col {
+      width: 15%;
+    }
+  }
   #locations {
     display: flex;
     flex-direction: column;
@@ -209,30 +244,32 @@ $secondaryColor: #f7e291;
     align-items: center;
     flex-wrap: nowrap;
     height: 100%;
-    width: 95%;
+    width: 98%;
     padding-bottom: 15px;
     margin-top: 20px;
     overflow-y: auto;
     border-top: 1px solid #dddddd;
 
-    .location {
+    #location {
       display: flex;
       flex-direction: row;
-      height: 60px;
+      height: 70px;
       width: 100%;
       border-bottom: 1px solid #dddddd;
       background: #fff;
       font-family: "Ubuntu", sans-serif;
+      overflow-x: auto;
       #buttons {
         display: flex;
         flex-direction: row;
         align-items: center;
         height: 100%;
+        width: 250px;
         .btn {
           display: flex;
           flex-direction: row;
           justify-content: center;
-          height: 50%;
+          height: 30px;
           width: 25px;
           margin: 5px;
           border-radius: 4px;
@@ -265,20 +302,37 @@ $secondaryColor: #f7e291;
       #data {
         display: flex;
         flex-direction: row;
+        justify-content: flex-start;
         height: 100%;
+        width: calc(100% - 250px);
         .data-element {
           display: flex;
+          flex-direction: row;
+          justify-content: center;
           height: 100%;
-          align-items: flex-start;
+          align-items: center;
           .text {
             display: flex;
-            padding: 15px;
+            // padding: 15px;
             font-family: "Muli", sans-serif;
-            font-size: 0.8em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            font-size: 0.9em;
+
             margin: auto;
           }
+        }
+        #name {
+          width: 20%;
+          background: orange;
+        }
+        #description {
+          width: 50%;
+        }
+        #date {
+          width: 15%;
+          background: orange;
+        }
+        #time {
+          width: 15%;
         }
       }
     }

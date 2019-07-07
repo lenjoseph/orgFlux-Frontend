@@ -62,7 +62,8 @@ export default {
       organization: "",
       name: "",
       description: "",
-      eventDate: ""
+      eventDate: "",
+      eventTime: ""
     };
   },
   methods: {
@@ -71,6 +72,7 @@ export default {
       this.name = "";
       this.description = "";
       this.eventDate = "";
+      this.eventTime = "";
     },
     // cancels add location
     cancelUpdate() {
@@ -98,7 +100,8 @@ export default {
           description: this.description
             ? this.description
             : this.source.description,
-          eventDate: this.eventDate ? this.eventDate : this.source.eventDate
+          eventDate: this.eventDate ? this.eventDate : this.source.eventDate,
+          eventTime: this.eventTime ? this.eventTime : this.source.eventTime
         }
       });
       this.clear();

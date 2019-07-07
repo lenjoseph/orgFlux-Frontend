@@ -9,6 +9,7 @@ export const GET_EVENTS = gql `
         name
         description
         eventDate
+        eventTime
         CreatedAt
         UpdatedAt
     }
@@ -24,6 +25,7 @@ export const GET_EVENT = gql `
         organization
         description
         eventDate
+        eventTime
         CreatedAt
         UpdatedAt
         }
@@ -39,6 +41,7 @@ export const ORG_EVENTS = gql `
         organization
         description
         eventDate
+        eventTime
         CreatedAt
         UpdatedAt
         }

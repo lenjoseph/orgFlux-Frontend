@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const GET_EVENTS = gql `
     query events {
+        events{
         events {
         _id
         organization
@@ -11,7 +12,8 @@ export const GET_EVENTS = gql `
         CreatedAt
         UpdatedAt
     }
-  }
+  } 
+    }
 `
 
 export const GET_EVENT = gql `
@@ -30,7 +32,7 @@ export const GET_EVENT = gql `
 
 export const ORG_EVENTS = gql `
     query orgEvents($id: ID!) {
-        events(id: $id) {
+        orgEvents(id: $id) {
             events{
         _id
         name

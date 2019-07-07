@@ -28,16 +28,6 @@ export const CREATE_LOCATION = gql `
     }
 `
 
-export const CREATE_ORGANIZATION = gql `
-mutation createOrganization($name: String!) {
-    createOrganization(name: $name) {
-                _id
-                name
-                CreatedAt
-                UpdatedAt
-        }
-}
-`
 // pasing
 export const UPDATE_LOCATION = gql `
     mutation updateLocation($id: ID!, $organization: String!, $name: String!, $address: String!, $city: String!, $state: String!, $country: String!, $zip: Int) {

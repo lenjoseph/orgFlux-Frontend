@@ -64,7 +64,7 @@
               v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
               class="btn"
               id="events"
-              @click="seeEvents(organization._id, organization.name)"
+              @click="orgEvents(organization._id, organization.name)"
             >Events</span>
           </span>
           <span class="btn-holder">
@@ -107,6 +107,12 @@
       :currentOrg="currentOrg"
       @close="showLocs=false"
     ></show-locations>
+    <show-events
+      :showEvs="showEvs"
+      :orgEvs="orgEvs"
+      :currentOrg="currentOrg"
+      @close="showEvs=false"
+    ></show-events>
   </div>
 </template>
 
@@ -122,10 +128,12 @@ import { format } from "path";
 import { ORG_LOCATIONS } from "../../graphql/queries/locationQueries";
 import { ORG_EVENTS } from "../../graphql/queries/eventQueries";
 import ShowLocations from "./ShowLocations";
+import ShowEvents from "./ShowEvents";
 
 export default {
   components: {
-    showLocations: ShowLocations
+    showLocations: ShowLocations,
+    showEvents: ShowEvents
   },
   data() {
     return {
@@ -139,18 +147,13 @@ export default {
       orgEvs: [],
       currentOrg: "",
       showLocs: false,
-      showEvents: false
+      showEvs: false
     };
   },
   computed: {
     ...mapGetters(["darkMode"])
   },
   methods: {
-    defaultView() {
-      this.viewLoc = false;
-      this.viewDefault = true;
-      this.viewEvents = false;
-    },
     editOn(organization) {
       this.editing = true;
       this.name = "";
@@ -180,7 +183,7 @@ export default {
           this.organizations = organizations;
         });
     },
-    // gets Locations for specific organization
+    // gets Locations for specific organization (passing)
     async orgLocations(id, name) {
       const response = await this.$apollo
         .query({
@@ -195,17 +198,20 @@ export default {
       this.currentOrg = name;
       this.showLocs = true;
     },
-    // gets events for specific organization
+    // gets events for specific organization (passing)
     async orgEvents(id, name) {
       const response = await this.$apollo
         .query({
-          query: ORG_EVENTS
+          query: ORG_EVENTS,
+          variables: {
+            id: id
+          }
         })
         .then(response => {
-          this.orgEvs = response.data.events.events;
+          this.orgEvs = response.data.orgEvents.events;
         });
       this.currentOrg = name;
-      this.showEvents = true;
+      this.showEvs = true;
     },
     // creates new organization
     async createOrganization() {

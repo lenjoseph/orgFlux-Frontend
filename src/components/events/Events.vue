@@ -185,7 +185,6 @@ export default {
     },
     async showUpdateFunc(id) {
       await this.getEvent(id);
-      console.log(this.source);
       this.showUpdate = true;
     }
   },

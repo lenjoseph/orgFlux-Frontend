@@ -220,7 +220,6 @@ export default {
     },
     async showUpdateFunc(id) {
       await this.getLocation(id);
-      console.log(this.source);
       this.showUpdate = true;
     }
   },

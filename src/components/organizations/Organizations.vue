@@ -191,8 +191,16 @@ export default {
             id: id
           }
         })
-        .then(response => {
-          this.orgLocs = response.data.orgLocations.locations;
+        .then(async response => {
+          const orgLocs = response.data.orgLocations.locations;
+          for (const location of orgLocs) {
+            const timeCache = await localTime(location);
+            location.cDay = timeCache.cDay;
+            location.cTime = timeCache.cTime;
+            location.uDay = timeCache.uDay;
+            location.uTime = timeCache.uTime;
+          }
+          this.orgLocs = orgLocs;
         });
       this.currentOrg = name;
       this.showLocs = true;
@@ -206,8 +214,16 @@ export default {
             id: id
           }
         })
-        .then(response => {
-          this.orgEvs = response.data.orgEvents.events;
+        .then(async response => {
+          const orgEvents = response.data.orgEvents.events;
+          for (const event of orgEvents) {
+            const timeCache = await localTime(event);
+            event.cDay = timeCache.cDay;
+            event.cTime = timeCache.cTime;
+            event.uDay = timeCache.uDay;
+            event.uTime = timeCache.uTime;
+          }
+          this.orgEvs = orgEvents;
         });
       this.currentOrg = name;
       this.showEvs = true;

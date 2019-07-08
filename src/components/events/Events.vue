@@ -98,7 +98,7 @@ import ShowOrg from "./ShowOrg";
 import { mapGetters } from "vuex";
 import { DELETE_EVENT } from "../../graphql/mutations/eventMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
-import moment from "moment";
+import { localTime } from "../../services/localTime";
 export default {
   components: {
     addEvent: AddEvent,
@@ -127,19 +127,14 @@ export default {
         .query({
           query: GET_EVENTS
         })
-        .then(response => {
+        .then(async response => {
           const events = response.data.events.events;
           for (const event of events) {
-            const created = moment(event.CreatedAt);
-            const updated = moment(event.UpdatedAt);
-            const cDate = created.utc().format("MM-DD-YYYY");
-            const uDate = updated.utc().format("MM-DD-YYYY");
-            const cTime = created.utc().format("h:mm A");
-            const uTime = updated.utc().format("h:mm A");
-            event.cDay = cDate;
-            event.cTime = cTime;
-            event.uDay = uDate;
-            event.uTime = uTime;
+            const timeCache = await localTime(event);
+            event.cDay = timeCache.cDay;
+            event.cTime = timeCache.cTime;
+            event.uDay = timeCache.uDay;
+            event.uTime = timeCache.uTime;
           }
           this.events = events;
         });

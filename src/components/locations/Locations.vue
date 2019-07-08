@@ -130,7 +130,7 @@ import ShowOrg from "./ShowOrg";
 import { mapGetters } from "vuex";
 import { DELETE_LOCATION } from "../../graphql/mutations/locationMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
-import moment from "moment";
+import { localTime } from "../../services/localTime";
 export default {
   components: {
     addLocation: AddLocation,
@@ -159,19 +159,14 @@ export default {
         .query({
           query: GET_LOCATIONS
         })
-        .then(response => {
+        .then(async response => {
           const locations = response.data.locations.locations;
           for (const location of locations) {
-            const created = moment(location.CreatedAt);
-            const updated = moment(location.UpdatedAt);
-            const cDate = created.utc().format("MM-DD-YYYY");
-            const uDate = updated.utc().format("MM-DD-YYYY");
-            const cTime = created.utc().format("h:mm A");
-            const uTime = updated.utc().format("h:mm A");
-            location.cDay = cDate;
-            location.cTime = cTime;
-            location.uDay = uDate;
-            location.uTime = uTime;
+            const timeCache = await localTime(location);
+            location.cDay = timeCache.cDay;
+            location.cTime = timeCache.cTime;
+            location.uDay = timeCache.uDay;
+            location.uTime = timeCache.uTime;
           }
           this.locations = locations;
         });
@@ -406,8 +401,6 @@ $secondaryColor: #f7e291;
             padding: 2px;
             font-family: "Muli", sans-serif;
             font-size: 0.8em;
-            word-break: break-all;
-            hyphens: auto;
             margin: auto;
           }
         }

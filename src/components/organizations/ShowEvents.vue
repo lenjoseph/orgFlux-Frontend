@@ -59,14 +59,39 @@
             </div>
 
             <div class="loc-info" id="info-5">
-              <p
-                class="loc-text"
+              <div
+                class="time"
                 v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
-              >{{event.CreatedAt}}</p>
-              <p
-                class="loc-text"
-                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
-              >{{event.UpdatedAt}}</p>
+              >
+                <div v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]" class="created">
+                  <p
+                    id="c-label"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >Created At</p>
+                  <p
+                    id="c-day"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >{{event.cDay}}</p>
+                  <p
+                    id="c-time"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >{{event.cTime}}</p>
+                </div>
+                <div v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]" class="updated">
+                  <p
+                    id="u-label"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >Last Updated</p>
+                  <p
+                    id="u-day"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >{{event.uDay}}</p>
+                  <p
+                    id="u-time"
+                    v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+                  >{{event.uTime}}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -242,6 +267,41 @@ $secondaryColor: #f7e291;
           flex-direction: row;
           justify-content: space-evenly;
           margin-bottom: 10px;
+          .time {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            .created {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+              height: 100%;
+              font-family: "Muli", sans-serif;
+              color: rgba($black, 0.9);
+              padding: 5px;
+              padding-right: 15px;
+              #c-label {
+                text-decoration: underline;
+              }
+            }
+            .updated {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-end;
+              height: 100%;
+              padding: 5px;
+              padding-left: 15px;
+              font-family: "Muli", sans-serif;
+              color: rgba($black, 0.9);
+              #u-label {
+                text-decoration: underline;
+              }
+            }
+          }
           .loc-text {
             display: flex;
             font-family: "Muli", sans-serif;

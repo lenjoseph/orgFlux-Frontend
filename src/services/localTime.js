@@ -1,11 +1,11 @@
 import moment from 'moment';
 
-const LocalTime = async function (org) {
+const LocalTime = async function (object) {
     const timeCache = {};
-    const created = moment(org.CreatedAt, moment.ISO_8601).format(
+    const created = moment(object.CreatedAt, moment.ISO_8601).format(
         "MM/DD/YYYY h:mm A"
     );
-    const updated = moment(org.UpdatedAt, moment.ISO_8601).format(
+    const updated = moment(object.UpdatedAt, moment.ISO_8601).format(
         "MM/DD/YYYY h:mm A"
     );
     const cDate = created.split(" ")[0];

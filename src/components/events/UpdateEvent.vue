@@ -47,9 +47,10 @@
                 for="address"
                 v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
               >Description</label>
-              <input
+              <textarea
                 class="field"
-                id="address"
+                rows="1"
+                id="description"
                 v-model="description"
                 type="text"
                 :placeholder="source.description"
@@ -448,6 +449,11 @@ $secondaryColor: #f7e291;
         flex-direction: column;
         align-items: center;
         width: 100%;
+        #description {
+          display: flex;
+          resize: none;
+          height: 55px;
+        }
         .select-wrapper {
           display: flex;
           flex-direction: row;

@@ -74,6 +74,7 @@
       :source="source"
       @close="showUpdate=false"
     ></update-location>
+    <show-org :showOrg="showOrg" :theOrg="theOrg" :theLocation="theLocation" @close="showOrg=false"></show-org>
   </div>
 </template>
 
@@ -84,21 +85,26 @@ import {
 } from "../../graphql/queries/locationQueries";
 import AddLocation from "./AddLocation";
 import UpdateLocation from "./UpdateLocation";
+import ShowOrg from "./ShowOrg";
 import { mapGetters } from "vuex";
 import { DELETE_LOCATION } from "../../graphql/mutations/locationMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
 export default {
   components: {
     addLocation: AddLocation,
-    updateLocation: UpdateLocation
+    updateLocation: UpdateLocation,
+    showOrg: ShowOrg
   },
   data() {
     return {
       locations: [],
       showAdd: false,
       showUpdate: false,
+      showOrg: false,
       locationID: "",
-      source: ""
+      source: "",
+      theOrg: "",
+      theLocation: ""
     };
   },
   computed: {
@@ -132,6 +138,7 @@ export default {
     },
     // gets organization for selected location (passing)
     async getOrganization(name, id) {
+      this.theLocation = name;
       await this.$apollo
         .query({
           query: GET_ORGANIZATION,
@@ -140,8 +147,9 @@ export default {
           }
         })
         .then(response => {
-          alert(name + " belongs to " + response.data.organization.name + ".");
+          this.theOrg = response.data.organization.name;
         });
+      this.showOrgFunc();
     },
     // deletes location (passing)
     async deleteLocation(id) {
@@ -155,6 +163,9 @@ export default {
     },
     showAddFunc() {
       this.showAdd = true;
+    },
+    showOrgFunc() {
+      this.showOrg = true;
     },
     setID(id) {
       this.locationID = id;

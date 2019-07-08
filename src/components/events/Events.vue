@@ -86,6 +86,7 @@
     </div>
     <add-event :show="showAdd" @close="showAdd=false"></add-event>
     <update-event :show="showUpdate" :updateID="eventID" :source="source" @close="showUpdate=false"></update-event>
+    <show-org :showOrg="showOrg" :theOrg="theOrg" :theEvent="theEvent" @close="showOrg=false"></show-org>
   </div>
 </template>
 
@@ -93,6 +94,7 @@
 import { GET_EVENTS, GET_EVENT } from "../../graphql/queries/eventQueries";
 import AddEvent from "./AddEvent";
 import UpdateEvent from "./UpdateEvent";
+import ShowOrg from "./ShowOrg";
 import { mapGetters } from "vuex";
 import { DELETE_EVENT } from "../../graphql/mutations/eventMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
@@ -100,7 +102,8 @@ import moment from "moment";
 export default {
   components: {
     addEvent: AddEvent,
-    updateEvent: UpdateEvent
+    updateEvent: UpdateEvent,
+    showOrg: ShowOrg
   },
   data() {
     return {
@@ -108,7 +111,10 @@ export default {
       showAdd: false,
       showUpdate: false,
       eventID: "",
-      source: ""
+      source: "",
+      showOrg: false,
+      theEvent: "",
+      theOrg: ""
     };
   },
   computed: {
@@ -153,6 +159,7 @@ export default {
     },
     // gets organization for selected location (passing)
     async getOrganization(name, id) {
+      this.theEvent = name;
       await this.$apollo
         .query({
           query: GET_ORGANIZATION,
@@ -161,8 +168,9 @@ export default {
           }
         })
         .then(response => {
-          alert(name + " belongs to " + response.data.organization.name + ".");
+          this.theOrg = response.data.organization.name;
         });
+      this.showOrgFunc();
     },
     // deletes event
     async deleteEvent(id) {
@@ -177,8 +185,8 @@ export default {
     showAddFunc() {
       this.showAdd = true;
     },
-    setID(id) {
-      this.eventID = id;
+    showOrgFunc() {
+      this.showOrg = true;
     },
     async showUpdateFunc(id) {
       await this.getEvent(id);

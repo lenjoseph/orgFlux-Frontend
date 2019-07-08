@@ -208,8 +208,8 @@ export default {
         }
       });
       this.clear();
-      this.$emit("close");
       this.$parent.getLocations();
+      this.$emit("close");
     }
   },
   mounted() {

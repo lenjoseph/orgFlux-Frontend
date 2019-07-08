@@ -297,12 +297,14 @@ $secondaryColor: #f7e291;
       border: none;
       padding-left: 10px;
       margin-right: 14px;
+      font-size: 1.2em;
+      color: $darkColor;
+      font-family: "Muli", sans-serif;
     }
     #org-field:focus {
       outline: none;
     }
     #org-field::placeholder {
-      font-size: 1.3em;
       color: $darkColor;
       font-family: "Muli", sans-serif;
     }

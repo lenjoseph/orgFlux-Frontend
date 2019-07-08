@@ -1,4 +1,4 @@
-# gql_locations_events_frontend
+# orgFlux-frontend
 
 ## Project setup
 ```

@@ -274,8 +274,9 @@ export default {
         }
       });
       this.clear();
-      this.$parent.getEvents();
       this.$emit("close");
+      this.$parent.getEvents();
+      
     }
   },
   mounted: function() {

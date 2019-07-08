@@ -118,7 +118,6 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
-import { formatTime } from "../../services/timeFormatter";
 import { GET_ORGANIZATIONS } from "../../graphql/queries/organizationQueries";
 import {
   CREATE_ORGANIZATION,

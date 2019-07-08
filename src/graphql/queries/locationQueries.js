@@ -21,7 +21,7 @@ export const GET_LOCATIONS = gql `
   }
   }
 `
-
+// passing
 export const GET_LOCATION = gql `
     query location($id: ID!) {
         location(id: $id) {

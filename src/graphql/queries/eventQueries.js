@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+// passing
 export const GET_EVENTS = gql `
     query events {
         events{
@@ -17,6 +18,7 @@ export const GET_EVENTS = gql `
     }
 `
 
+// passing
 export const GET_EVENT = gql `
     query event($id: ID!) {
         event(id: $id) {
@@ -32,6 +34,7 @@ export const GET_EVENT = gql `
     }
 `
 
+// passing
 export const ORG_EVENTS = gql `
     query orgEvents($id: ID!) {
         orgEvents(id: $id) {

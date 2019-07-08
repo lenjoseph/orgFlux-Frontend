@@ -7,6 +7,39 @@
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
       >Add Location</button>
     </div>
+    <div id="labels" v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]">
+      <div class="spacer"></div>
+      <div class="label" id="name-col">
+        <p class="label-text">Name</p>
+      </div>
+      <div class="label" id="address-col">
+        <p class="label-text">Address</p>
+      </div>
+      <div class="label" id="city-col">
+        <p class="label-text">City</p>
+      </div>
+      <div class="label" id="State-col">
+        <p class="label-text">State</p>
+      </div>
+      <div class="label" id="Country-col">
+        <p class="label-text">Country</p>
+      </div>
+      <div class="label" id="zip-col">
+        <p class="label-text">Zip</p>
+      </div>
+      <div class="label" id="latitude-col">
+        <p class="label-text">Latitude</p>
+      </div>
+      <div class="label" id="longitude-col">
+        <p class="label-text">Longitude</p>
+      </div>
+      <div class="label" id="created-col">
+        <p class="label-text">Created</p>
+      </div>
+      <div class="label" id="updated-col">
+        <p class="label-text">Updated</p>
+      </div>
+    </div>
     <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
       <div
         id="location"
@@ -64,6 +97,14 @@
           <div class="data-element" id="longitude">
             <p class="text">{{location.longitude}}</p>
           </div>
+          <div class="data-element" id="created">
+            <p class="text">{{location.cDay}}</p>
+            <p class="text">{{location.cTime}}</p>
+          </div>
+          <div class="data-element" id="updated">
+            <p class="text">{{location.uDay}}</p>
+            <p class="text">{{location.uTime}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -89,6 +130,7 @@ import ShowOrg from "./ShowOrg";
 import { mapGetters } from "vuex";
 import { DELETE_LOCATION } from "../../graphql/mutations/locationMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
+import moment from "moment";
 export default {
   components: {
     addLocation: AddLocation,
@@ -118,9 +160,20 @@ export default {
           query: GET_LOCATIONS
         })
         .then(response => {
-          if (response.data.locations.locations.length) {
-            this.locations = response.data.locations.locations;
+          const locations = response.data.locations.locations;
+          for (const location of locations) {
+            const created = moment(location.CreatedAt);
+            const updated = moment(location.UpdatedAt);
+            const cDate = created.utc().format("MM-DD-YYYY");
+            const uDate = updated.utc().format("MM-DD-YYYY");
+            const cTime = created.utc().format("h:mm A");
+            const uTime = updated.utc().format("h:mm A");
+            location.cDay = cDate;
+            location.cTime = cTime;
+            location.uDay = uDate;
+            location.uTime = uTime;
           }
+          this.locations = locations;
         });
     },
     // gets current data for selected location
@@ -235,6 +288,44 @@ $secondaryColor: #f7e291;
       outline: none;
     }
   }
+  #labels {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: flex-start;
+    width: 98%;
+    margin-top: 30px;
+    font-size: 1em;
+    font-family: "Ubuntu", sans-serif;
+    .spacer {
+      width: 250px;
+    }
+    .label {
+      justify-content: center;
+      width: 10%;
+      .label-text {
+        padding: 3px;
+      }
+    }
+    #name-col {
+      width: 15%;
+    }
+    #description-col {
+      width: 37%;
+    }
+    #date-col {
+      width: 12%;
+    }
+    #time-col {
+      width: 12%;
+    }
+    #created-col {
+      width: 12%;
+    }
+    #updated-col {
+      width: 12%;
+    }
+  }
   #locations {
     display: flex;
     flex-direction: column;
@@ -243,30 +334,32 @@ $secondaryColor: #f7e291;
     align-items: center;
     flex-wrap: nowrap;
     height: 100%;
-    width: 95%;
+    width: 98%;
     padding-bottom: 15px;
     margin-top: 20px;
     overflow-y: auto;
     border-top: 1px solid #dddddd;
 
-    .location {
+    #location {
       display: flex;
       flex-direction: row;
-      height: 60px;
+      height: 70px;
       width: 100%;
       border-bottom: 1px solid #dddddd;
       background: #fff;
       font-family: "Ubuntu", sans-serif;
+      overflow-x: auto;
       #buttons {
         display: flex;
         flex-direction: row;
         align-items: center;
         height: 100%;
+        width: 250px;
         .btn {
           display: flex;
           flex-direction: row;
           justify-content: center;
-          height: 50%;
+          height: 30px;
           width: 25px;
           margin: 5px;
           border-radius: 4px;
@@ -299,20 +392,65 @@ $secondaryColor: #f7e291;
       #data {
         display: flex;
         flex-direction: row;
+        justify-content: flex-start;
         height: 100%;
+        width: 100%;
         .data-element {
           display: flex;
+          flex-direction: row;
+          justify-content: center;
           height: 100%;
-          align-items: flex-start;
+          align-items: center;
           .text {
             display: flex;
-            padding: 15px;
+            padding: 2px;
             font-family: "Muli", sans-serif;
             font-size: 0.8em;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            word-break: break-all;
+            hyphens: auto;
             margin: auto;
           }
+        }
+        #name {
+          width: 10%;
+        }
+        #address {
+          width: 10%;
+        }
+        #city {
+          width: 10%;
+        }
+        #state {
+          width: 10%;
+        }
+        #country {
+          width: 10%;
+        }
+        #zip {
+          width: 10%;
+        }
+        #latitude {
+          width: 10%;
+        }
+        #longitude {
+          width: 10%;
+        }
+        #created {
+          display: flex;
+          width: 10%;
+          height: 100%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        #updated {
+          width: 10%;
+          display: flex;
+          width: 12%;
+          height: 100%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
       }
     }

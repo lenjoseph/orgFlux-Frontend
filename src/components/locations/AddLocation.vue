@@ -118,6 +118,7 @@
                 placeholder="12345"
                 maxlength="5"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                @keydown.enter="createLocation();"
               />
             </div>
           </div>

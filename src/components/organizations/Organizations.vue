@@ -129,6 +129,7 @@ import { ORG_LOCATIONS } from "../../graphql/queries/locationQueries";
 import { ORG_EVENTS } from "../../graphql/queries/eventQueries";
 import ShowLocations from "./ShowLocations";
 import ShowEvents from "./ShowEvents";
+import moment from "moment";
 
 export default {
   components: {
@@ -170,15 +171,19 @@ export default {
     async getOrganizations() {
       const response = await this.$apollo
         .query({ query: GET_ORGANIZATIONS })
-        .then(async response => {
+        .then(response => {
           const organizations = response.data.organizations.organizations;
           for (const org of organizations) {
-            const created = await formatTime(org.CreatedAt);
-            const updated = await formatTime(org.UpdatedAt);
-            org.cDay = created.day;
-            org.cTime = created.time;
-            org.uDay = updated.day;
-            org.uTime = updated.time;
+            const created = moment(org.CreatedAt);
+            const updated = moment(org.UpdatedAt);
+            const cDate = created.utc().format("MM-DD-YYYY");
+            const uDate = updated.utc().format("MM-DD-YYYY");
+            const cTime = created.utc().format("h:mm A");
+            const uTime = updated.utc().format("h:mm A");
+            org.cDay = cDate;
+            org.cTime = cTime;
+            org.uDay = uDate;
+            org.uTime = uTime;
           }
           this.organizations = organizations;
         });

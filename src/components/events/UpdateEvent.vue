@@ -1,13 +1,25 @@
 <template>
   <transition name="addLoc">
     <div id="container" @click="cancelUpdate();" v-show="show">
-      <div id="sub-container" @click.stop>
+      <div
+        id="sub-container"
+        @click.stop
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border: '2px solid #4dafab'}: {}]"
+      >
         <div id="header-wrap">
-          <p id="header">Update Location</p>
+          <p id="header" v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]">Update Event</p>
         </div>
         <div id="org-select">
-          <p id="org-prompt">Please select an organization for this location:</p>
-          <select v-model="organization" id="org-picker">
+          <p
+            id="org-prompt"
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+          >Please select an organization for this event:</p>
+          <select
+            v-model="organization"
+            class="select"
+            id="org-picker"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+          >
             <option disabled selected value>Select Organization</option>
             <option v-for="org in organizations" :value="org">{{org.name}}</option>
           </select>
@@ -15,36 +27,128 @@
         <div id="location-info">
           <div id="info-1">
             <div class="info-wrapper">
-              <label for="name" class="label">Name</label>
-              <input class="field" id="name" v-model="name" type="text" :placeholder="source.name" />
+              <label
+                for="name"
+                class="label"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Name</label>
+              <input
+                class="field"
+                id="name"
+                v-model="name"
+                type="text"
+                :placeholder="source.name"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+              />
             </div>
             <div class="info-wrapper">
-              <label class="label" for="address">Description</label>
+              <label
+                class="label"
+                for="address"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Description</label>
               <input
                 class="field"
                 id="address"
                 v-model="description"
                 type="text"
                 :placeholder="source.description"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
           </div>
           <div id="info-2">
-            <div class="info-wrapper">
-              <label class="label" for="city">Event Date</label>
-              <input
-                class="field"
-                id="city"
-                v-model="eventDate"
-                type="text"
-                :placeholder="source.eventDate"
-              />
+            <div class="info-wrapper" id="dates">
+              <div id="date-header">
+                <p
+                  class="label"
+                  v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+                >Event Date</p>
+              </div>
+              <div class="select-wrapper" id="date-selector">
+                <select
+                  v-model="month"
+                  class="select"
+                  id="month"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventDate.split(' ')[0]}}</option>
+                  <option v-for="selection in months" :value="selection">{{selection}}</option>
+                </select>
+                <select
+                  v-model="day"
+                  class="select"
+                  id="day"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventDate.split(' ')[1].slice(0,2)}}</option>
+                  <option v-for="selection in days" :value="selection">{{selection}}</option>
+                </select>
+                <select
+                  v-model="year"
+                  class="select"
+                  id="year"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventDate.split(' ')[2]}}</option>
+                  <option v-for="selection in years" :value="selection">{{selection}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="info-wrapper" id="times">
+              <div id="time-header">
+                <p
+                  class="label"
+                  v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+                >Event Time</p>
+              </div>
+              <div class="select-wrapper" id="time-selector">
+                <select
+                  v-model="hour"
+                  class="select"
+                  id="hour"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventTime.split(':')[0]}}</option>
+                  <option v-for="selection in hours" :value="selection">{{selection}}</option>
+                </select>
+
+                <select
+                  v-model="minute"
+                  class="select"
+                  id="minute"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventTime.split(':')[1].slice(0,2)}}</option>
+                  <option v-for="selection in minutes" :value="selection">{{selection}}</option>
+                </select>
+                <select
+                  v-model="meridiem"
+                  class="select"
+                  id="meridiem"
+                  v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                >
+                  <option selected value>{{source.eventTime.split(' ')[1]}}</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
         <div id="controls">
-          <button class="button" id="cancel" @click="cancelUpdate();">Cancel</button>
-          <button class="button" id="submit" @click="updateEvent();">Submit</button>
+          <button
+            class="button"
+            id="cancel"
+            @click="cancelUpdate();"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#ff7f7e', border:'1px solid #ff7f7e'}: {}]"
+          >Cancel</button>
+          <button
+            class="button"
+            id="submit"
+            @click="updateEvent();"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+          >Submit</button>
         </div>
       </div>
     </div>
@@ -52,6 +156,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { UPDATE_EVENT } from "../../graphql/mutations/eventMutations";
 import { GET_ORGANIZATIONS } from "../../graphql/queries/organizationQueries";
 export default {
@@ -59,14 +164,70 @@ export default {
   data() {
     return {
       organizations: [],
+      years: [],
+      months: [],
+      days: [],
+      hours: [],
+      minutes: [],
       organization: "",
+      year: "",
+      month: "",
+      day: "",
+      hour: "",
+      minute: "",
+      meridiem: "",
       name: "",
       description: "",
       eventDate: "",
       eventTime: ""
     };
   },
+  computed: {
+    ...mapGetters(["darkMode"])
+  },
   methods: {
+    genDates() {
+      this.months.push(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      );
+
+      for (let i = 1; i <= 31; i++) {
+        if (i < 10) {
+          this.days.push("0" + i);
+        } else {
+          this.days.push(i);
+        }
+      }
+
+      for (let i = 2019; i <= 2100; i++) {
+        this.years.push(i);
+      }
+    },
+    // generates dropdown options for time selection
+    genTime() {
+      for (let i = 1; i <= 12; i++) {
+        this.hours.push(i);
+      }
+
+      for (let i = 0; i <= 60; i++) {
+        if (i < 10) {
+          this.minutes.push("0" + i);
+        } else {
+          this.minutes.push(i);
+        }
+      }
+    },
     clear() {
       this.organization = "";
       this.name = "";
@@ -89,6 +250,21 @@ export default {
     },
     // updates selected location (passing)
     async updateEvent() {
+      const month = this.month
+        ? this.month
+        : this.source.eventDate.split(" ")[0];
+      const day = this.day
+        ? this.day
+        : this.source.eventDate.split(" ")[1].slice(0, 2);
+      const year = this.year ? this.year : this.source.eventDate.split(" ")[2];
+      const hour = this.hour ? this.hour : this.source.eventTime.split(":")[0];
+      const minute = this.minute
+        ? this.minute
+        : this.source.eventTime.split(":")[1].slice(0, 2);
+      const meridiem = this.meridiem
+        ? this.meridiem
+        : this.source.eventTime.split(" ")[1];
+
       await this.$apollo.mutate({
         mutation: UPDATE_EVENT,
         variables: {
@@ -100,8 +276,8 @@ export default {
           description: this.description
             ? this.description
             : this.source.description,
-          eventDate: this.eventDate ? this.eventDate : this.source.eventDate,
-          eventTime: this.eventTime ? this.eventTime : this.source.eventTime
+          eventDate: month + " " + day + ", " + year,
+          eventTime: hour + ":" + minute + " " + meridiem
         }
       });
       this.clear();
@@ -118,6 +294,8 @@ export default {
   },
   created() {
     this.getOrganizations();
+    this.genTime();
+    this.genDates();
   }
 };
 </script>
@@ -193,6 +371,17 @@ $secondaryColor: #f7e291;
     border-radius: 6px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.33);
     z-index: 9999;
+    .select {
+      display: flex;
+      font-size: 1em;
+      font-family: "Muli", sans-serif;
+      border-radius: 10px;
+      margin-top: 10px;
+      margin: 5px;
+    }
+    .select:focus {
+      outline: none;
+    }
     #header-wrap {
       display: flex;
       #header {
@@ -249,6 +438,7 @@ $secondaryColor: #f7e291;
         font-family: "Ubuntu", sans-serif;
         color: $darkColor;
         font-size: 1em;
+        margin-top: 10px;
       }
       .field:focus {
         outline: none;
@@ -258,6 +448,10 @@ $secondaryColor: #f7e291;
         flex-direction: column;
         align-items: center;
         width: 100%;
+        .select-wrapper {
+          display: flex;
+          flex-direction: row;
+        }
       }
       #info-1 {
         display: flex;

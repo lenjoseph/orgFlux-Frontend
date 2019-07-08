@@ -20,7 +20,11 @@
           >X</button>
         </div>
         <div class="no-locs" v-show="!orgEvs.length">
-          <p class="text" id="no-locs-text">No events to show for this organization.</p>
+          <p
+            class="text"
+            id="no-locs-text"
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+          >No events to show for this organization.</p>
         </div>
         <div id="loc-wrapper">
           <div
@@ -48,6 +52,10 @@
                 class="loc-text"
                 v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
               >{{event.eventDate}}</p>
+              <p
+                class="loc-text"
+                v-bind:style="[darkMode == true ? {color: 'rgba(34, 38, 41, 1)'}: {}]"
+              >{{event.eventTime}}</p>
             </div>
 
             <div class="loc-info" id="info-5">

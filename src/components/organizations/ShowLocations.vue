@@ -20,7 +20,11 @@
           >X</button>
         </div>
         <div class="no-locs" v-show="!orgLocs.length">
-          <p class="text" id="no-locs-text">No locations to show for this organization.</p>
+          <p
+            class="text"
+            id="no-locs-text"
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+          >No locations to show for this organization.</p>
         </div>
         <div id="loc-wrapper">
           <div

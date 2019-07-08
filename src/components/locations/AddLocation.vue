@@ -1,13 +1,24 @@
 <template>
   <transition name="addLoc">
     <div id="container" @click="cancelAdd();" v-show="show">
-      <div id="sub-container" @click.stop>
+      <div
+        id="sub-container"
+        @click.stop
+        v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border: '2px solid #4dafab'}: {}]"
+      >
         <div id="header-wrap">
-          <p id="header">Add New Location</p>
+          <p id="header" v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]">Add New Location</p>
         </div>
         <div id="org-select">
-          <p id="org-prompt">Please select an organization for this location:</p>
-          <select v-model="organization" id="org-picker">
+          <p
+            id="org-prompt"
+            v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+          >Please select an organization for this location:</p>
+          <select
+            v-model="organization"
+            id="org-picker"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+          >
             <option disabled selected value>Select Organization</option>
             <option v-for="org in organizations" :value="org">{{org.name}}</option>
           </select>
@@ -15,55 +26,90 @@
         <div id="location-info">
           <div id="info-1">
             <div class="info-wrapper">
-              <label for="name" class="label">Name</label>
+              <label
+                for="name"
+                class="label"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Name</label>
               <input
                 class="field"
                 id="name"
                 v-model="name"
                 type="text"
                 placeholder="e.g. Northeast Office"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
             <div class="info-wrapper">
-              <label class="label" for="address">Address</label>
+              <label
+                class="label"
+                for="address"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Address</label>
               <input
                 class="field"
                 id="address"
                 v-model="address"
                 type="text"
                 placeholder="e.g. 123 Cowabunga Dr."
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
           </div>
           <div id="info-2">
             <div class="info-wrapper">
-              <label class="label" for="city">City</label>
-              <input class="field" id="city" v-model="city" type="text" placeholder="e.g. New York" />
+              <label
+                class="label"
+                for="city"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >City</label>
+              <input
+                class="field"
+                id="city"
+                v-model="city"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
+                type="text"
+                placeholder="e.g. New York"
+              />
             </div>
             <div class="info-wrapper">
-              <label class="label" for="state">State</label>
+              <label
+                class="label"
+                for="state"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >State</label>
               <input
                 class="field"
                 id="state"
                 v-model="state"
                 type="text"
                 placeholder="e.g. New York"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
           </div>
           <div id="info-3">
             <div class="info-wrapper">
-              <label class="label" for="country">Country</label>
+              <label
+                class="label"
+                for="country"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Country</label>
               <input
                 class="field"
                 id="country"
                 v-model="country"
                 type="text"
                 placeholder="e.g. United States"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
             <div class="info-wrapper">
-              <label class="label" for="zip">Zip Code</label>
+              <label
+                class="label"
+                for="zip"
+                v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]"
+              >Zip Code</label>
               <input
                 class="field"
                 id="zip"
@@ -71,15 +117,22 @@
                 type="number"
                 placeholder="12345"
                 maxlength="5"
+                v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
             </div>
           </div>
         </div>
         <div id="controls">
-          <button class="button" id="cancel" @click="cancelAdd();">Cancel</button>
+          <button
+            class="button"
+            id="cancel"
+            @click="cancelAdd();"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#ff7f7e', border:'1px solid #ff7f7e'}: {}]"
+          >Cancel</button>
           <button
             class="button"
             id="submit"
+            v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
             :disabled="!organization || !name || !address || !city || !state || !country || !zip"
             @click="createLocation();"
           >Submit</button>
@@ -90,6 +143,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { CREATE_LOCATION } from "../../graphql/mutations/locationMutations";
 import { GET_ORGANIZATIONS } from "../../graphql/queries/organizationQueries";
 export default {
@@ -105,6 +159,9 @@ export default {
       country: "",
       zip: null
     };
+  },
+  computed: {
+    ...mapGetters(["darkMode"])
   },
   methods: {
     llogger() {

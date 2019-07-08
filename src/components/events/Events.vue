@@ -7,7 +7,8 @@
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
       >Add Event</button>
     </div>
-    <div id="labels">
+    <div id="labels" v-bind:style="[darkMode == true ? {color: '#75e1dd'}: {}]">
+      <div class="spacer"></div>
       <div class="label" id="name-col">
         <p class="label-text">Name</p>
       </div>
@@ -19,6 +20,12 @@
       </div>
       <div class="label" id="time-col">
         <p class="label-text">Time</p>
+      </div>
+      <div class="label" id="created-col">
+        <p class="label-text">Created</p>
+      </div>
+      <div class="label" id="updated-col">
+        <p class="label-text">Updated</p>
       </div>
     </div>
     <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
@@ -66,6 +73,14 @@
           <div class="data-element" id="time">
             <p class="text">{{event.eventTime}}</p>
           </div>
+          <div class="data-element" id="created">
+            <p class="text">{{event.cDay}}</p>
+            <p class="text">{{event.cTime}}</p>
+          </div>
+          <div class="data-element" id="updated">
+            <p class="text">{{event.uDay}}</p>
+            <p class="text">{{event.uTime}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -81,6 +96,7 @@ import UpdateEvent from "./UpdateEvent";
 import { mapGetters } from "vuex";
 import { DELETE_EVENT } from "../../graphql/mutations/eventMutations";
 import { GET_ORGANIZATION } from "../../graphql/queries/organizationQueries";
+import moment from "moment";
 export default {
   components: {
     addEvent: AddEvent,
@@ -106,7 +122,20 @@ export default {
           query: GET_EVENTS
         })
         .then(response => {
-          this.events = response.data.events.events;
+          const events = response.data.events.events;
+          for (const event of events) {
+            const created = moment(event.CreatedAt);
+            const updated = moment(event.UpdatedAt);
+            const cDate = created.utc().format("MM-DD-YYYY");
+            const uDate = updated.utc().format("MM-DD-YYYY");
+            const cTime = created.utc().format("h:mm A");
+            const uTime = updated.utc().format("h:mm A");
+            event.cDay = cDate;
+            event.cTime = cTime;
+            event.uDay = uDate;
+            event.uTime = uTime;
+          }
+          this.events = events;
         });
     },
     // gets current data for selected event
@@ -219,21 +248,35 @@ $secondaryColor: #f7e291;
   #labels {
     display: flex;
     flex-direction: row;
+    align-self: center;
     justify-content: flex-start;
-    width: calc(100% - 262px);
-    margin-left: 262px;
+    width: 98%;
+    margin-top: 30px;
+    font-size: 1em;
     font-family: "Ubuntu", sans-serif;
+    .spacer {
+      width: 250px;
+    }
+    .label {
+      justify-content: center;
+    }
     #name-col {
-      width: 20%;
+      width: 15%;
     }
     #description-col {
-      width: 50%;
+      width: 37%;
     }
     #date-col {
-      width: 15%;
+      width: 12%;
     }
     #time-col {
-      width: 15%;
+      width: 12%;
+    }
+    #created-col {
+      width: 12%;
+    }
+    #updated-col {
+      width: 12%;
     }
   }
   #locations {
@@ -304,7 +347,7 @@ $secondaryColor: #f7e291;
         flex-direction: row;
         justify-content: flex-start;
         height: 100%;
-        width: calc(100% - 250px);
+        width: 100%;
         .data-element {
           display: flex;
           flex-direction: row;
@@ -313,26 +356,41 @@ $secondaryColor: #f7e291;
           align-items: center;
           .text {
             display: flex;
-            // padding: 15px;
+            padding: 2px;
             font-family: "Muli", sans-serif;
-            font-size: 0.9em;
+            font-size: 0.8em;
 
             margin: auto;
           }
         }
         #name {
-          width: 20%;
-          background: orange;
+          width: 15%;
         }
         #description {
-          width: 50%;
+          width: 37%;
         }
         #date {
-          width: 15%;
-          background: orange;
+          width: 12%;
         }
         #time {
-          width: 15%;
+          width: 12%;
+        }
+        #created {
+          display: flex;
+          width: 12%;
+          height: 100%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        #updated {
+          width: 12%;
+          display: flex;
+          width: 12%;
+          height: 100%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
       }
     }

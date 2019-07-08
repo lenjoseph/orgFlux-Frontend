@@ -1,18 +1,42 @@
 <template>
   <div id="container">
     <button
+      v-show="darkMode"
+      class="selector-dark"
+      id="org-select-dark"
+      @click="organizationView();"
+      v-bind:style="[currentComponent == 'organization-view' ? {background: 'linear-gradient(230deg, #0ad8a7, #3dafab)', color: 'rgba(34, 38, 41, 1)', fontSize: '1.3em'}: {}]"
+    >Organizations</button>
+    <button
+      v-show="!darkMode"
       class="selector"
       id="org-select"
       @click="organizationView();"
       v-bind:style="[currentComponent == 'organization-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', border: '#3dafab'}: {}]"
     >Organizations</button>
     <button
+      v-show="darkMode"
+      class="selector-dark"
+      id="loc-select-dark"
+      @click="locationView();"
+      v-bind:style="[currentComponent == 'location-view' ? {background: 'linear-gradient(230deg, #0ad8a7, #3dafab)', color: 'rgba(34, 38, 41, 1)', fontSize: '1.3em'}: {}]"
+    >Locations</button>
+    <button
+      v-show="!darkMode"
       class="selector"
       id="loc-select"
       @click="locationView();"
       v-bind:style="[currentComponent == 'location-view' ? {background: '#f2f2fa', color: '#457b9d', fontSize: '1.3em', border: '#3dafab'}: {}]"
     >Locations</button>
     <button
+      v-show="darkMode"
+      class="selector-dark"
+      id="event-select-dark"
+      @click="eventView();"
+      v-bind:style="[currentComponent == 'event-view' ? {background: 'linear-gradient(230deg, #0ad8a7, #3dafab)', color: 'rgba(34, 38, 41, 1)', fontSize: '1.3em'}: {}]"
+    >Events</button>
+    <button
+      v-show="!darkMode"
       class="selector"
       id="event-select"
       @click="eventView();"
@@ -95,6 +119,33 @@ $secondaryColor: #f7e291;
     box-shadow: none;
   }
   .selector:focus {
+    outline: none;
+  }
+  .selector-dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32%;
+    height: 100%;
+    color: #75e1dd;
+    background: rgba(34, 38, 41, 1);
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 6px;
+    font-family: "Muli", sans-serif;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0px 3px 3px #75e1dd;
+    transition: ease-in-out all 0.1s;
+  }
+  .selector-dark:active {
+    outline: none;
+    // transform: scale(0.98);
+    box-shadow: none;
+  }
+  .selector-dark:focus {
     outline: none;
   }
 }

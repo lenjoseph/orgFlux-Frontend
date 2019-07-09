@@ -5,6 +5,7 @@
         id="org-field"
         v-model="name"
         type="text"
+        autocomplete="off"
         placeholder="Enter Organization Name..."
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
         @keydown.enter="createOrganization();"
@@ -23,6 +24,7 @@
       <input
         id="edit-field"
         type="text"
+        autocomplete="off"
         v-model="newName"
         :placeholder="editOrg"
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"

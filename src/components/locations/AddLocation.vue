@@ -36,6 +36,7 @@
                 id="name"
                 v-model="name"
                 type="text"
+                autocomplete="off"
                 placeholder="e.g. Northeast Office"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -51,6 +52,7 @@
                 id="address"
                 v-model="address"
                 type="text"
+                autocomplete="off"
                 placeholder="e.g. 123 Cowabunga Dr."
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -69,6 +71,7 @@
                 v-model="city"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
                 type="text"
+                autocomplete="off"
                 placeholder="e.g. New York"
               />
             </div>
@@ -83,6 +86,7 @@
                 id="state"
                 v-model="state"
                 type="text"
+                autocomplete="off"
                 placeholder="e.g. New York"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -100,6 +104,7 @@
                 id="country"
                 v-model="country"
                 type="text"
+                autocomplete="off"
                 placeholder="e.g. United States"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -115,6 +120,7 @@
                 id="zip"
                 v-model="zip"
                 type="number"
+                autocomplete="off"
                 placeholder="12345"
                 maxlength="5"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"

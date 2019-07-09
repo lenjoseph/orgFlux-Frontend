@@ -36,6 +36,7 @@
                 id="name"
                 v-model="name"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.name"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -51,6 +52,7 @@
                 id="address"
                 v-model="address"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.address"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -68,6 +70,7 @@
                 id="city"
                 v-model="city"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.city"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -83,6 +86,7 @@
                 id="state"
                 v-model="state"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.state"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -100,6 +104,7 @@
                 id="country"
                 v-model="country"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.country"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -115,6 +120,7 @@
                 id="zip"
                 v-model="zip"
                 type="number"
+                autocomplete="off"
                 :placeholder="source.zip"
                 maxlength="5"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"

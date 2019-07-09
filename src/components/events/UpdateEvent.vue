@@ -37,6 +37,7 @@
                 id="name"
                 v-model="name"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.name"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -53,6 +54,7 @@
                 id="description"
                 v-model="description"
                 type="text"
+                autocomplete="off"
                 :placeholder="source.description"
                 v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
               />
@@ -284,7 +286,7 @@ export default {
         })
         .then(this.clear())
         .then(this.$emit("close"));
-        this.$parent.getEvents();
+      this.$parent.getEvents();
     }
   },
   mounted() {

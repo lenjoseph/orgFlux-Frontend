@@ -6,7 +6,7 @@
         @click.stop
         v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd'}: {}]"
       >
-        <div class="wrapper" id="header-wrap">
+        <div class="top-wrapper" id="header-wrap">
           <p
             class="text"
             id="header"
@@ -223,6 +223,10 @@ $secondaryColor: #f7e291;
       margin-top: 40px;
     }
     .wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+    .top-wrapper {
       display: flex;
       flex-direction: column;
     }

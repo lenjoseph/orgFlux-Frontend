@@ -158,7 +158,7 @@ $secondaryColor: #f7e291;
   }
 }
 
-/*animation for model*/
+/*animation for modal*/
 
 .showLoc-enter,
 .showLoc-leave-active {

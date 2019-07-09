@@ -28,10 +28,10 @@
         <p class="label-text">Updated</p>
       </div>
     </div>
-    <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
+    <div id="events" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
       <div
-        id="location"
-        class="location"
+        id="event"
+        class="event"
         v-for="(event,index) in events"
         :key="event._id"
         :event="event"
@@ -121,7 +121,7 @@ export default {
     ...mapGetters(["darkMode"])
   },
   methods: {
-    // fetches list of locations (passing)
+    // fetches list of events (passing)
     async getEvents() {
       const response = await this.$apollo
         .query({
@@ -152,7 +152,7 @@ export default {
           this.source = response.data.event;
         });
     },
-    // gets organization for selected location (passing)
+    // gets organization for selected event (passing)
     async getOrganization(name, id) {
       this.theEvent = name;
       await this.$apollo
@@ -206,9 +206,10 @@ $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
 
-/* assumes pagination limited to 20 items */
-@for $i from 1 through 20 {
-  .location {
+/* reduce 200 to 20 once pagination limited to 20 items */
+
+@for $i from 1 through 200 {
+  .event {
     &:nth-child(#{$i}) {
       // Delay the animation. Delay increases as items loop.
       animation-delay: $i * (0.03s);
@@ -308,7 +309,7 @@ $secondaryColor: #f7e291;
       width: 12%;
     }
   }
-  #locations {
+  #events {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -322,7 +323,7 @@ $secondaryColor: #f7e291;
     overflow-y: auto;
     border-top: 1px solid #dddddd;
 
-    #location {
+    #event {
       display: flex;
       flex-direction: row;
       height: 70px;

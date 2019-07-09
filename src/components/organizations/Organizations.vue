@@ -4,6 +4,7 @@
       <input
         id="org-field"
         v-model="name"
+        name="org-field"
         type="text"
         autocomplete="off"
         placeholder="Enter Organization Name..."
@@ -23,6 +24,7 @@
     <div id="edit" v-show="editing">
       <input
         id="edit-field"
+        name="edit-field"
         type="text"
         autocomplete="off"
         v-model="newName"
@@ -254,6 +256,7 @@ export default {
       this.getOrganizations();
     }
   },
+
   created() {
     this.getOrganizations();
   }
@@ -307,7 +310,7 @@ $secondaryColor: #f7e291;
       outline: none;
     }
     #org-field::placeholder {
-      color: $darkColor;
+      color: $primaryColor;
       font-family: "Muli", sans-serif;
     }
     #add-btn {
@@ -364,7 +367,7 @@ $secondaryColor: #f7e291;
       margin-right: 14px;
     }
     #edit-field::placeholder {
-      color: $darkColor;
+      color: $primaryColor;
       font-family: "Muli", sans-serif;
     }
     #edit-field:focus {

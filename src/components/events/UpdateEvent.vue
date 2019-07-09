@@ -447,6 +447,9 @@ $secondaryColor: #f7e291;
       .field:focus {
         outline: none;
       }
+      .field::placeholder{
+        color: $primaryColor;
+      }
       .info-wrapper {
         display: flex;
         flex-direction: column;

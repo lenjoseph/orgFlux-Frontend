@@ -154,6 +154,32 @@ $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
 
+/* reduce 200 to 20 once pagination limited to 20 items */
+@for $i from 1 through 200 {
+  .wrapper {
+    &:nth-child(#{$i}) {
+      // Delay the animation. Delay increases as items loop.
+      animation-delay: $i * (0.03s);
+    }
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/*animation for modal*/
 .showLoc-enter,
 .showLoc-leave-active {
   opacity: 0;

@@ -140,7 +140,7 @@
             class="button"
             id="submit"
             v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
-            :disabled="!organization || !name || !address || !city || !state || !country || zip.length != 5"
+            :disabled="formDisabled"
             @click="createLocation();"
           >Submit</button>
         </div>
@@ -168,7 +168,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["darkMode"])
+    ...mapGetters(["darkMode"]),
+    formDisabled(){
+      if (!this.organization || !this.name || !this.address || !this.city || !this.state || !this.country || this.zip.length != 5) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     clear() {

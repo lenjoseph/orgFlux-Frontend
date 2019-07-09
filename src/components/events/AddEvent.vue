@@ -151,7 +151,7 @@
           <button
             class="button"
             id="submit"
-            :disabled="!organization || !name || !description"
+            :disabled="formDisabled"
             @click="createEvent();"
             v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)', color: '#75e1dd', border:'1px solid #75e1dd'}: {}]"
           >Submit</button>
@@ -189,7 +189,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["darkMode"])
+    ...mapGetters(["darkMode"]),
+    formDisabled(){
+      if (!this.organization || !this.name || !this.description) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     // generates dropdown options for date selection

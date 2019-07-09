@@ -24,7 +24,7 @@
             <option v-for="org in organizations" :value="org">{{org.name}}</option>
           </select>
         </div>
-        <div id="location-info">
+        <div id="event-info">
           <div id="info-1">
             <div class="info-wrapper">
               <label
@@ -243,7 +243,7 @@ export default {
       this.eventDate = "";
       this.eventTime = "";
     },
-    // cancels add location
+    // cancels add event
     cancelAdd() {
       this.clear();
       this.$emit("close");
@@ -402,7 +402,7 @@ $secondaryColor: #f7e291;
         color: $darkColor;
       }
     }
-    #location-info {
+    #event-info {
       display: flex;
       flex-direction: column;
       justify-content: space-around;

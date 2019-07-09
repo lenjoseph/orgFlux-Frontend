@@ -263,19 +263,20 @@ export default {
       const hour = this.hour ? this.hour : this.hours[11];
       const minute = this.minute ? this.minute : this.minutes[0];
       const meridiem = this.meridiem ? this.meridiem : " AM";
-      await this.$apollo.mutate({
-        mutation: CREATE_EVENT,
-        variables: {
-          organization: this.organization._id,
-          name: this.name,
-          description: this.description,
-          eventDate: month + " " + day + ", " + year,
-          eventTime: hour + ":" + minute + " " + meridiem
-        }
-      });
-      this.clear();
+      await this.$apollo
+        .mutate({
+          mutation: CREATE_EVENT,
+          variables: {
+            organization: this.organization._id,
+            name: this.name,
+            description: this.description,
+            eventDate: month + " " + day + ", " + year,
+            eventTime: hour + ":" + minute + " " + meridiem
+          }
+        })
+        .then(this.clear())
+        .then(this.$emit("close"));
       this.$parent.getEvents();
-      this.$emit("close");
     }
   },
   mounted: function() {

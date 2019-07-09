@@ -189,21 +189,22 @@ export default {
     },
     // creates new location
     async createLocation() {
-      await this.$apollo.mutate({
-        mutation: CREATE_LOCATION,
-        variables: {
-          organization: this.organization._id,
-          name: this.name,
-          address: this.address,
-          city: this.city,
-          state: this.state,
-          country: this.country,
-          zip: parseInt(this.zip, 10)
-        }
-      });
-      this.clear();
+      await this.$apollo
+        .mutate({
+          mutation: CREATE_LOCATION,
+          variables: {
+            organization: this.organization._id,
+            name: this.name,
+            address: this.address,
+            city: this.city,
+            state: this.state,
+            country: this.country,
+            zip: parseInt(this.zip, 10)
+          }
+        })
+        .then(this.clear())
+        .then(this.$emit("close"));
       this.$parent.getLocations();
-      this.$emit("close");
     }
   },
   mounted: function() {

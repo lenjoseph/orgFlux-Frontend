@@ -192,24 +192,25 @@ export default {
     },
     // updates selected location (passing)
     async updateLocation() {
-      await this.$apollo.mutate({
-        mutation: UPDATE_LOCATION,
-        variables: {
-          id: this.source._id,
-          organization: this.organization._id
-            ? this.organization._id
-            : this.source.organization,
-          name: this.name ? this.name : this.source.name,
-          address: this.address ? this.address : this.source.address,
-          city: this.city ? this.city : this.source.city,
-          state: this.state ? this.state : this.source.state,
-          country: this.country ? this.country : this.source.country,
-          zip: this.zip ? parseInt(this.zip, 10) : this.source.zip
-        }
-      });
-      this.clear();
+      await this.$apollo
+        .mutate({
+          mutation: UPDATE_LOCATION,
+          variables: {
+            id: this.source._id,
+            organization: this.organization._id
+              ? this.organization._id
+              : this.source.organization,
+            name: this.name ? this.name : this.source.name,
+            address: this.address ? this.address : this.source.address,
+            city: this.city ? this.city : this.source.city,
+            state: this.state ? this.state : this.source.state,
+            country: this.country ? this.country : this.source.country,
+            zip: this.zip ? parseInt(this.zip, 10) : this.source.zip
+          }
+        })
+        .then(this.clear())
+        .then(this.$emit("close"));
       this.$parent.getLocations();
-      this.$emit("close");
     }
   },
   mounted() {

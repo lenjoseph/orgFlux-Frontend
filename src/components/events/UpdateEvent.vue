@@ -266,24 +266,25 @@ export default {
         ? this.meridiem
         : this.source.eventTime.split(" ")[1];
 
-      await this.$apollo.mutate({
-        mutation: UPDATE_EVENT,
-        variables: {
-          id: this.source._id,
-          organization: this.organization._id
-            ? this.organization._id
-            : this.source.organization,
-          name: this.name ? this.name : this.source.name,
-          description: this.description
-            ? this.description
-            : this.source.description,
-          eventDate: month + " " + day + ", " + year,
-          eventTime: hour + ":" + minute + " " + meridiem
-        }
-      });
-      this.clear();
-      this.$parent.getEvents();
-      this.$emit("close");
+      await this.$apollo
+        .mutate({
+          mutation: UPDATE_EVENT,
+          variables: {
+            id: this.source._id,
+            organization: this.organization._id
+              ? this.organization._id
+              : this.source.organization,
+            name: this.name ? this.name : this.source.name,
+            description: this.description
+              ? this.description
+              : this.source.description,
+            eventDate: month + " " + day + ", " + year,
+            eventTime: hour + ":" + minute + " " + meridiem
+          }
+        })
+        .then(this.clear())
+        .then(this.$emit("close"));
+        this.$parent.getEvents();
     }
   },
   mounted() {

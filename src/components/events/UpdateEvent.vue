@@ -24,7 +24,7 @@
             <option v-for="org in organizations" :value="org">{{org.name}}</option>
           </select>
         </div>
-        <div id="location-info">
+        <div id="event-info">
           <div id="info-1">
             <div class="info-wrapper">
               <label
@@ -238,7 +238,7 @@ export default {
       this.eventDate = "";
       this.eventTime = "";
     },
-    // cancels add location
+    // cancels add event
     cancelUpdate() {
       this.clear();
       this.$emit("close");
@@ -251,7 +251,7 @@ export default {
           this.organizations = response.data.organizations.organizations;
         });
     },
-    // updates selected location (passing)
+    // updates selected event (passing)
     async updateEvent() {
       const month = this.month
         ? this.month
@@ -418,7 +418,7 @@ $secondaryColor: #f7e291;
         outline: none;
       }
     }
-    #location-info {
+    #event-info {
       display: flex;
       flex-direction: column;
       justify-content: space-around;

@@ -241,8 +241,8 @@ $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
 
-/* assumes pagination limited to 20 items */
-@for $i from 1 through 20 {
+/* reduce 200 to 20 once pagination limited to 20 items */
+@for $i from 1 through 200 {
   .location {
     &:nth-child(#{$i}) {
       // Delay the animation. Delay increases as items loop.

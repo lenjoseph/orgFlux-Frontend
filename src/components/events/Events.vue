@@ -322,7 +322,7 @@ $secondaryColor: #f7e291;
     margin-top: 20px;
     overflow-y: auto;
     border-top: 1px solid #dddddd;
-
+    overflow-x: hidden;
     #event {
       display: flex;
       flex-direction: row;

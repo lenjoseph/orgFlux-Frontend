@@ -43,7 +43,7 @@
     <div id="locations" v-bind:style="[darkMode == true ? {borderTop: '1px solid #3dafab'}: {}]">
       <div
         id="location"
-        class="location"
+        class="location animation"
         v-for="(location,index) in locations"
         :key="location._id"
         :location="location"
@@ -241,9 +241,12 @@ $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
 
+.animation {
+  animation: 0.3s ease-in-out both fade-in;
+}
 /* reduce 200 to 20 once pagination limited to 20 items */
 @for $i from 1 through 200 {
-  .location {
+  .animation {
     &:nth-child(#{$i}) {
       // Delay the animation. Delay increases as items loop.
       animation-delay: $i * (0.03s);
@@ -265,8 +268,6 @@ $secondaryColor: #f7e291;
     transform: scale(1);
   }
 }
-
-
 
 #container {
   display: flex;

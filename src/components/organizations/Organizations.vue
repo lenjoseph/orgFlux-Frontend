@@ -49,7 +49,7 @@
       v-bind:style="[darkMode == true ? {background: 'rgba(34, 38, 41, 1)'}: {}]"
     >
       <div
-        class="organization-data"
+        class="organization-data animation"
         id="card"
         v-for="(organization, index) in organizations"
         :key="organization._id"
@@ -275,10 +275,12 @@ $darkColor: #1e737c;
 $lightColor: #75e1dd;
 $secondaryColor: #f7e291;
 
-
+.animation {
+  animation: 0.3s ease-in-out both fade-in;
+}
 /* reduce 200 to 20 once pagination limited to 20 items */
 @for $i from 1 through 200 {
-  .organization-data {
+  .animation {
     &:nth-child(#{$i}) {
       // Delay the animation. Delay increases as items loop.
       animation-delay: $i * (0.03s);
@@ -300,8 +302,6 @@ $secondaryColor: #f7e291;
     transform: scale(1);
   }
 }
-
-
 
 #container {
   display: flex;
@@ -477,8 +477,9 @@ $secondaryColor: #f7e291;
       margin: 15px;
       border-radius: 8px;
       box-shadow: 0px 4px 4px grey;
-      transition: all 0.1s ease;
+      // transition: all 0.1s ease;
       background: #fff;
+
       .buttons {
         display: flex;
         flex-direction: row;
